@@ -1,0 +1,71 @@
+{
+  "_from": "telegram-cms",
+  "_id": "telegram-cms@0.5.0",
+  "_inBundle": false,
+  "_integrity": "sha512-rtIN4m4+3okv48lynzbNkSbJBkDqwQI2/qm9/EEExbyPc50uHKkQn9UFzPAGEHPUvTvIJBIj7+ut8SB/mpEKlg==",
+  "_location": "/telegram-cms",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "telegram-cms",
+    "name": "telegram-cms",
+    "escapedName": "telegram-cms",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/telegram-cms/-/telegram-cms-0.5.0.tgz",
+  "_shasum": "0dc23b5c82e61f0a937fb0b071e77d1434eaa2a0",
+  "_spec": "telegram-cms",
+  "_where": "H:\\MyWork\\Programming\\Telegram Bots\\test",
+  "author": {
+    "name": "navid shad",
+    "url": "navidshad72@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/navidshad/telegram-cms/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "datejs": "^1.0.0-rc3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "moment-timezone": "^0.5.13",
+    "mongoose": "^4.7.2",
+    "morgan": "~1.9.0",
+    "musicmetadata": "^2.0.5",
+    "node-telegram-bot-api": "*",
+    "pug": "2.0.0-beta11",
+    "query-string": "^6.0.0",
+    "replace-string": "^1.1.0",
+    "request-promise": "^4.2.2",
+    "serve-favicon": "~2.4.5",
+    "soap": "^0.23.0"
+  },
+  "deprecated": false,
+  "description": "it is a nodejs application to lunch a telegram bot in seconds with primary components.",
+  "homepage": "https://github.com/navidshad/telegram-cms#readme",
+  "keywords": [
+    "telegram",
+    "cms",
+    "chatbot"
+  ],
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "name": "telegram-cms",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/navidshad/telegram-cms.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.5.1"
+}
