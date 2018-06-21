@@ -5,13 +5,13 @@ there is an ability to wire your own modules on telegram-cms.
 
 I'll complete this documentation during my tasks. but here is a simple "how to use"
 
-##how to use
-- install it,
-- creat an app.js (or what ever you want).
-- require it and start.
-
 ###note
 - the main language of bot is persion, but I will make a multilanguage system for it, soon.
+
+##how to use
+- install it,
+- creat an app.js (or what ever you want)
+- require it and start
 
 ...
     var tcms = require('telegram-cms');
