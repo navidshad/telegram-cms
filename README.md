@@ -4,10 +4,10 @@ I have work on telegram bots for almost 2 years and catched up most of needs for
 there is an ability to write your own modules on telegram-cms that I'll explain then.
 I'll complete this documentation during my tasks. but here is a simple "how to use"
 
-###note
+### Note
 - the main language of bot is persion, but I will make a multilanguage system for it, soon.
 
-##how to use
+## How to use
 - install it,
 - creat an app.js (or what ever you want)
 - require it and start
