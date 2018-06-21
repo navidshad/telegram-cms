@@ -12,7 +12,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - creat an app.js (or what ever you want)
 - require it and start
 
-    //this is your app.js file
+    // this is your app.js file
     var tcms = require('telegram-cms');
 
     var option = {
@@ -42,5 +42,5 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
         modulespath: require('path').join(__dirname, 'plugins'),	// If you write your own modules
     }
     
-    //initialize the cms
+    // initialize the cms
     tcms.start(option);
