@@ -11,6 +11,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - install it,
 - creat an app.js (or what ever you want)
 - require it and start
+
 ...
     // this is your app.js file
     var tcms = require('telegram-cms');
