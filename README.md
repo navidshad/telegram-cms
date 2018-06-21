@@ -12,7 +12,6 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - creat an app.js (or what ever you want)
 - require it and start
 
-...
 
     var tcms = require('telegram-cms');
 
@@ -44,4 +43,3 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
     }
 
     tcms.start(option);
-...
