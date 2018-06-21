@@ -13,6 +13,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - require it and start
 
 ...
+
     var tcms = require('telegram-cms');
 
     var option = {
