@@ -48,3 +48,15 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
     tcms.start(option);
     
 ...
+
+## comment events
+
+...
+
+    // if nothing tobe routed by moduls,
+    global.fn.eventEmitter.on('nothingtoroute', (message, speratedSection, user) => {});
+
+    // if user send a command type message
+    global.fn.eventEmitter.on('commands', (message, speratedSection, user) => {});
+
+...

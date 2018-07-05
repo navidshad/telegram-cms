@@ -360,9 +360,15 @@ var editMessageText = function (text, option)
     return global.robot.bot.editMessageText(text, option).then();
 }
 
-function sleep(ms) 
+var sleep = function(ms) 
 {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+var getStartLink = function(startParam)
+{
+    var link = 'http://t.me/' + botusername + '?start=' + startParam;
+    return link;
 }
 
 module.exports = {
@@ -380,5 +386,5 @@ module.exports = {
     getModuleData, alertadmins, getRoute,
     saveLastMessage, getLastMessage,
     sendMessage, sendDocument, editMessageText,
-    sleep, 
+    sleep, getStartLink,
 }
