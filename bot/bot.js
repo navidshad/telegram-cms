@@ -28,13 +28,16 @@ var settingUp = function()
         // setting test run
         if(global.config.testRun)
         {
-        global.config.dbpath = global.config.dbpath_test;
-        global.config.token = global.config.token_test;
+            global.config.dbpath = global.config.dbpath_test;
+            global.config.token = global.config.token_test;
         }
         
         /// must be declear first
         events = require('events');
         global.fn = { eventEmitter: new events.EventEmitter() };
+        if(typeof global.config.fn == 'object')
+            extend(global.fn, global.config.fn);
+
         global.mRoutes = [];
         global.searchRoutes = [];
 

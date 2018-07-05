@@ -12,11 +12,11 @@ module.exports = function(detail){
     this.lastMessage = null;
 
     this.start = async function()
-    { 
+    {
         global.robot = this;
-        await this.load();
         var bot = new global.fn.telegramBot(this.token, {polling: true});
         global.robot.bot = bot;
+        await this.load();
 
         //Message
         global.robot.bot.on('message', (msg) => {

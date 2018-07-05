@@ -3,8 +3,11 @@ module.exports.chanelChecker = {
     name:'⚙️' + ' - ' + 'کانال تلگرام', 
     back:'🔙 بازگشت به ⚙️ کانال تلگرام', 
 
+    addChannelRegister: '/registerbot',
+
     btns: {
-        'settings' : 'تنظیمات'
+        settings : 'تنظیمات',
+        newchannel : 'افزودن کانال',
     },
 
     query: {

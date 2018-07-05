@@ -3,7 +3,6 @@ require('datejs');
 Date.i18n.setLanguage('fa-IR');
 
 var fs                  = require('fs');
-var request             = require('request');
 var path                = require('path');
 var request             = require('request');
 
@@ -333,12 +332,17 @@ var sendDocument = async function(chatid, fileid, type, option={})
         case 'file':
             return global.robot.bot.sendDocument(chatid, fileid, option).then();
             break;
+
         case 'photo':
             return global.robot.bot.sendPhoto(chatid, fileid, option).then();
             break;
             
         case 'sound':
             return global.robot.bot.sendAudio(chatid, fileid, option).then();
+            break;
+
+        case 'voice':
+            return global.robot.bot.sendVoice(chatid, fileid, option).then();
             break;
 
         case 'video':

@@ -5,7 +5,7 @@ there is an ability to write your own modules on telegram-cms that I'll explain 
 I'll complete this documentation during my tasks. but here is a simple "how to use"
 
 ### Note
-- the main language of bot is persion, but I will make a multilanguage system for it, soon.
+- the main language of the cms is persion, but I will make a multilanguage system for it, soon.
 
 ## How to use
 - install it,
@@ -19,22 +19,22 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 
     var option = {
         // mongo db path
-        dbpath      :'mongodb://[username]:[password]@[hostname]:[db detail]',
+        dbpath      :'mongodb://127.0.0.1:27017/telegram_cms',
         // bot token
-        token       :'501661926:AAEOPbgcY_JCHQg2g4ouWA6rgdNZ8B7GEp9Q',
+        token       :'tokenxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
         // bot username
-        botusername :'barmBaf_bot',
+        botusername :'username_bot',
         // activate modules
         modules:{
             'category'          :true,	// category module
             'post'              :true,	// post module
-            'commerce'          :false,	// shop module
+            'commerce'          :true,	// shop module
             'settings'          :true,	// setting module
-            'search'            :false,	// search module
-            'ticket'            :true,	// contact form module
+            'search'            :true,	// search module
+            'sendbox'           :true,	// contact form module
             'contacttousers'    :true,	// a module for send message to users
             'chanelChecker'     :true,	// a module for connecting to a channel
-            'favorites'         :false,	// a module to make favorite (favorite posts, etc)
+            'favorites'         :true,	// a module to make favorite (favorite posts, etc)
         },
 
         // web

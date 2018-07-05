@@ -43,7 +43,8 @@ var isActive = function(){
     else return false;
 }
 
-var registerChannel = function(chat, messageid){
+var registerChannel = function(chat, messageid)
+{
     var moduleOption = fn.getModuleOption('chanelChecker');
     var detail = [];
 
@@ -94,7 +95,29 @@ var InviteUser = function(userid){
     global.fn.sendMessage(userid, mess);
 }
 
-var routting = function(message, speratedSection, user){
+var show = async function(userid, txt)
+{
+    var titles = [[
+        fn.mstr[name].btns['newchannel']
+    ]];
+    
+    var items = await fn.db.sendbox.find({}).sort('_id').exec().then();
+        //make title list
+        if(items.length > 0){
+            items.forEach(function(element) {
+                titles.push(global.fn.mstr[name]['sendboxSymbol'] + element.title);
+            }, this);
+        }
+
+        fn.userOper.setSection(userid, fn.mstr[name].name, true);  
+        var messtosend = (txt) ? txt : fn.mstr[name].name;
+        var back = fn.str.goToAdmin.back;
+        var markup = global.fn.generateKeyboard({'custom': true, 'grid':false, 'list': titles, 'back':back}, false);
+        global.fn.sendMessage(userid, messtosend, markup);
+}
+
+var routting = function(message, speratedSection, user)
+{
     var text = message.text;
     var last = speratedSection.length-1;
     //show chanelChecker setting
