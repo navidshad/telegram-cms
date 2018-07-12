@@ -8,13 +8,13 @@ var show = async function(message, postName, user, optionPrams, callback)
         if(callback) callback(user);
         return;
     }
-
-    //inline buttuns
-    var detailArr = [];
-    var query = fn.mstr.commerce.query;
-    var fn_addToBag = query['commerce'] + '-' + query['user'] + '-' + query['addToBag'] + '-' + 'post' + '-' + post.id;
     
     if(post.isproduct) {
+        //inline buttuns
+        var detailArr = [];
+        var query = fn.mstr.commerce.query;
+        var fn_addToBag = query['commerce'] + '-' + query['user'] + '-' + query['addToBag'] + '-' + 'post' + '-' + post.id;
+
         var isbought = await fn.m.commerce.user.bag.checkBoughtItem(user.userid, post.id);
         if(!isbought) 
             detailArr.push([ {'text': 'افزودن به سبد', 'callback_data': fn_addToBag} ]);   

@@ -33,11 +33,12 @@
   "bundleDependencies": false,
   "dependencies": {
     "datejs": "^1.0.0-rc3",
+    "fs-extra": "^6.0.1",
+    "moment-timezone": "^0.5.13",
     "mongoose": "^4.7.2",
     "node-telegram-bot-api": "*",
-    "request-promise": "^4.2.2",
-    "request":"*",
-    "moment-timezone": "^0.5.13"
+    "request": "*",
+    "request-promise": "^4.2.2"
   },
   "deprecated": false,
   "description": "it is a nodejs application to lunch a telegram bot in seconds with primary components.",
@@ -59,5 +60,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.6.1"
+  "version": "0.6.8"
 }

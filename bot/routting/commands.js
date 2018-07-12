@@ -28,7 +28,7 @@ var registerAdmin = function(message){
 //back to mainMenu
 var backToMainMenu = async function(userid, user, mess){
     //console.log('go to main menu');
-    await fn.getMainMenuItems().then();
+    await fn.getMainMenuItems(user);
     var items = global.robot.menuItems;
     fn.userOper.setSection(userid, fn.str['mainMenu'], false);
     remarkup = fn.generateKeyboard({'section':fn.str['mainMenu'], 'list':items, "isCompelet": user.isCompelet, "isAdmin": user.isAdmin}, false);

@@ -1,6 +1,6 @@
 fn = global.fn;
 
-var routting = function(message){
+var routting = async function(message){
     console.log('routing', message.from.id);
     
     //commands
@@ -10,7 +10,12 @@ var routting = function(message){
     else if (message.text && message.text.includes('/getwordcount'))  fn.commands.getWordCount(message.from.id);
     
     //emit command event
-    else if (message.text && message.text.startsWith('/')) fn.eventEmitter.emit('commands', message);
+    else if (message.text && message.text.startsWith('/')) 
+    {
+        if(message.text.startsWith('/start')) 
+            await fn.commands.start(message);
+        fn.eventEmitter.emit('commands', message);
+    }
     
     //routting
     else{

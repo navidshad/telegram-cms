@@ -28,7 +28,6 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
         modules:{
             'category'          :true,	// category module
             'post'              :true,	// post module
-            'commerce'          :true,	// shop module
             'settings'          :true,	// setting module
             'search'            :true,	// search module
             'sendbox'           :true,	// contact form module
@@ -57,6 +56,9 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
     global.fn.eventEmitter.on('nothingtoroute', (message, speratedSection, user) => {});
 
     // if user send a command type message
-    global.fn.eventEmitter.on('commands', (message, speratedSection, user) => {});
+    global.fn.eventEmitter.on('commands', (message) => {});
+
+    // recive from inline mode
+    global.fn.eventEmitter.on('inlineQuery', (InlineQuery) => {});
 
 ...

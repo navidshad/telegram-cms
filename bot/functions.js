@@ -3,6 +3,7 @@ require('datejs');
 Date.i18n.setLanguage('fa-IR');
 
 var fs                  = require('fs');
+var fse                 = require('fs-extra');
 var path                = require('path');
 var request             = require('request');
 
@@ -96,7 +97,7 @@ var removeFile = function(path, callback)
     });
 }
 
-var getMenuItems = async function(name, callback)
+var getMenuItems = async function(name, user, callback)
 {
     var items = [];
     var noitem = false;
@@ -109,23 +110,25 @@ var getMenuItems = async function(name, callback)
 
     //get modules
     var modulsoptions = global.robot.config.moduleOptions;
-    if(modulsoptions) {
-        modulsoptions.forEach(function(md) {
-            if(md.category === name && md.active){
-                var order = (typeof md.btn_order === 'number') ? md.btn_order : 1;
-                //if moudle has 1 btn
-                if(md.button) items.push({'name':md.button, 'order': order});
-                //if module has more than 1 btn
-                else if(md.buttons.length > 0) {
-                    md.buttons.forEach(element => { items.push({'name':element, 'order': order}); });
-                }
-                
-                //user route method
-                var mRoute = getModuleRouteMethods(md.name);
-                if(!mRoute.userRoute) return;
-                mRoute.methods.getButtons(md.name).forEach(element => { items.push({'name':element, 'order': order}); });
-            }
-        }, this);
+    for (let i = 0; i < modulsoptions.length; i++) 
+    {
+        const md = modulsoptions[i];
+        if(md.category !== name || !md.active) continue;
+
+        var order = (typeof md.btn_order === 'number') ? md.btn_order : 1;
+        //if moudle has 1 btn
+        if(md.button) items.push({'name':md.button, 'order': order});
+        //if module has more than 1 btn
+        else if(md.buttons.length > 0) {
+            md.buttons.forEach(element => { items.push({'name':element, 'order': order}); });
+        }
+        
+        //user route method
+        var mRoute = getModuleRouteMethods(md.name);
+        if(!mRoute.userRoute) continue;
+        
+        var buttons = await mRoute.methods.getButtons(md.name, user);
+        buttons.forEach(btn => { items.push({'name':btn, 'order': order}); });
     }
 
     //sort
@@ -147,18 +150,14 @@ var getMenuItems = async function(name, callback)
     if(category && category.description) detail.description = category.description;
     if(category && category.attachments) detail.attachments = category.attachments;
     
-    if(callback) callback(newItems, detail, noitem);
+    var result = { 'items': newItems, 'detail': detail, 'noitem': noitem };
+    return result;
 }
 
-var getMainMenuItems = function()
+var getMainMenuItems = async function(user)
 {
-    return new Promise((resolve, reject) => {
-        getMenuItems(fn.mstr.category['maincategory'], (items) => { 
-            global.robot.menuItems = (items) ? items : [];
-            //items.push(fn.str.mainMenuItems['contact']);
-            resolve();
-        });
-    })
+    var result = await getMenuItems(fn.mstr.category['maincategory'], user);
+    global.robot.menuItems = (result.items) ? result.items : [];
 }
 
 var queryStringMaker = function(parameter, list, condition)
@@ -367,6 +366,7 @@ var sleep = function(ms)
 
 var getStartLink = function(startParam)
 {
+    var botusername = global.robot.username;
     var link = 'http://t.me/' + botusername + '?start=' + startParam;
     return link;
 }
@@ -376,7 +376,7 @@ module.exports = {
     db, time, str, telegramBot, generateKeyboard, convertObjectToArray, commands,
     getMainMenuItems, getMenuItems, converAMenuItemsToArray, queryStringMaker,
     checkValidMessage, saveTelegramFile, removeFile, freeStrings,
-    updateBotContent, request, path, fs, 
+    updateBotContent, request, path, fs, fse, 
     //user
     userOper, menu,
     //admin

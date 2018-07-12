@@ -1,22 +1,25 @@
-var showCategoryDir = function(message, catname, speratedSection)
+var showCategoryDir = async function(message, catname, speratedSection, user)
 {
-    fn.getMenuItems(catname, (items, detail, noitem) => 
-    {
-        //parent
-        var parent = speratedSection[speratedSection.length-2];
-        var back = (parent === fn.str['mainMenu']) ? fn.str['backToMenu'] : fn.mstr.category['backtoParent'];
-        
-        if(noitem)
-        {
-            global.fn.sendMessage(message.from.id, 'این بخش هنوز خالی است.');
-            return;
-        }
+    var result = await fn.getMenuItems(catname, user);
 
-        fn.userOper.setSection(message.from.id, catname, true);
-        var markup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': items, 'back':back}, false);
-        global.fn.sendMessage(message.from.id, detail.description, markup);
-        fn.m.post.user.snedAttachmentArray(message, detail.attachments, 0);
-    });
+    var items = result.items,
+        detail = result.detail,
+        noitem = result.noitem; 
+
+    //parent
+    var parent = speratedSection[speratedSection.length-2];
+    var back = (parent === fn.str['mainMenu']) ? fn.str['backToMenu'] : fn.mstr.category['backtoParent'];
+    
+    if(noitem)
+    {
+        global.fn.sendMessage(message.from.id, 'این بخش هنوز خالی است.');
+        return;
+    }
+
+    fn.userOper.setSection(message.from.id, catname, true);
+    var markup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': items, 'back':back}, false);
+    global.fn.sendMessage(message.from.id, detail.description, markup);
+    fn.m.post.user.snedAttachmentArray(message, detail.attachments, 0);
 }
 
 var backtoParent = function(message, speratedSection, user)
@@ -31,7 +34,7 @@ var backtoParent = function(message, speratedSection, user)
     if(catname == fn.str['mainMenu'] || !catname) 
         fn.commands.backToMainMenu(message.from.id, user);
     else if(fn.m.category.checkInValidCat(catname)) 
-        showCategoryDir(message, catname, nsperatedSection);
+        showCategoryDir(message, catname, nsperatedSection, user);
     // free string
     else fn.freeStrings.routting(message, speratedSection, user); 
 }
@@ -52,14 +55,14 @@ var routting = function(message, speratedSection, user){
         var catname = text.split(' - ')[1];
         speratedSection.splice(last, 1);
         fn.userOper.setSection(message.from.id, catname, true);
-        showCategoryDir(message, catname, speratedSection);
+        showCategoryDir(message, catname, speratedSection, user);
     }
 
     //go to category
     else if(fn.m.category.checkInValidCat(text)){
         //console.log('go to category', text);
         speratedSection.push(text);
-        showCategoryDir(message, text, speratedSection);
+        showCategoryDir(message, text, speratedSection, user);
     }
 
     //go to a post  
