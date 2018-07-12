@@ -10,19 +10,18 @@ var checktasks = function()
     {
         for (let i = 0; i < global.scheduleTasks.length; i++) 
         {
-            doneCounter++;
             const task = global.scheduleTasks[i];
             // compare date, 1 = greater, -1 = less than, 0 = equal
             var status = now.compareTo(task.date);
             
             if(status == -1) {
-                continue; // new is less than the task date
                 newSchedule.push(task);
+                continue; // new is less than the task date
             }
 
             //do task
+            doneCounter++;
             task.callback(task.params);
-            global.scheduleTasks.splice(i, 1);
         }
 
         //set new schedule
@@ -55,7 +54,7 @@ global.fn.eventEmitter.on('addtoschedule', (code, date,  params={}, callback) =>
     var index = null;
     global.scheduleTasks.forEach((task, i) => 
     {
-        if(code !== task.code) return;
+        if(code == null || code !== task.code) return;
         isadded = true;
         index = i;
     });

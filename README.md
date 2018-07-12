@@ -61,4 +61,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
     // recive from inline mode
     global.fn.eventEmitter.on('inlineQuery', (InlineQuery) => {});
 
+    // schedul an event
+    global.fn.eventEmitter.emit('addtoschedule', code, date,  parameters, callback);
+
 ...
