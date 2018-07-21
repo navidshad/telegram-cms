@@ -229,5 +229,6 @@ var routting = async function(message, speratedSection, user)
 
 var query = require('./query');
 var upload = require('./upload');
+var send = require('./send');
 
-module.exports = { name, checkRoute, routting, query, show, edit, showSender, upload }
+module.exports = { name, checkRoute, routting, query, show, edit, showSender, upload, send }
