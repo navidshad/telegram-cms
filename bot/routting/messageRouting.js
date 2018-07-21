@@ -18,7 +18,8 @@ var routting = async function(message){
     }
     
     //routting
-    else{
+    else
+    {
         //validating user
         fn.userOper.checkProfile(message.from.id, (user) => {
             

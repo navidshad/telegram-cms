@@ -15,14 +15,17 @@ var routting = function(message, speratedSection, user)
         show(message);
     }
     //module routting
-    else {
-        global.mRoutes.forEach(route => {
+    else 
+    {
+        for (let index = 0; index < global.mRoutes.length; index++) 
+        {
+            const route = global.mRoutes[index];
             var result = route.admin({'text':text, 'speratedSection': speratedSection});
-            if(result.status) {
-                result.routting(message, speratedSection, user, route.name);
-                return;
-            }
-        });
+            if(!result.status) continue;
+
+            result.routting(message, speratedSection, user, route.name);
+            break;
+        }
     }
 }
 

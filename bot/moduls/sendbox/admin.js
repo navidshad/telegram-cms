@@ -57,14 +57,16 @@ var show = async function(userid, txt)
 
 var showSender = async function (userid, sender) 
 {
-   //create callback keyboard
-   var detailArr = [];
-   var qt = fn.mstr[name].query;
-   var fn_editTitle = qt['sendbox'] + '-' + qt['title'] + '-' + sender._id;
-   var fn_editText  = qt['sendbox'] + '-' + qt['text'] + '-' + sender._id;
-   var fn_delete = qt['sendbox'] + '-' + qt['delete'] + '-' + sender._id;
-   var fn_publication = qt['sendbox'] + '-' + qt['send'] + '-' + sender._id;
-   var fn_attachment   = qt['sendbox'] + '-' + fn.str.query['attach'] + '-' + sender._id;
+    //create callback keyboard
+    var detailArr = [];
+    var qt = fn.mstr[name].query;
+    var fn_editText  = qt['sendbox'] + '-' + qt['text'] + '-' + sender._id;
+    var fn_delete = qt['sendbox'] + '-' + qt['delete'] + '-' + sender._id;
+    var fn_publication = qt['sendbox'] + '-' + qt['send'] + '-' + sender._id;
+    var fn_attachment   = qt['sendbox'] + '-' + fn.str.query['attach'] + '-' + sender._id;
+
+    var fn_vote = qt['sendbox'] + '-' + qt['addVoteitem'] + '-' + sender._id;
+    var fn_voteResult = qt['sendbox'] + '-' + qt['voteresult'] + '-' + sender._id;
 
 
    //edit btns //publication btn
@@ -75,6 +77,19 @@ var showSender = async function (userid, sender)
         {'text': '📝 متن', 'callback_data': fn_editText}
     ]);
     
+    //vote
+    detailArr.push([ 
+        {'text': 'افزودن ایتم نظرسنجی', 'callback_data': fn_vote},
+        {'text': 'نمایش نتیجه', 'callback_data': fn_voteResult},
+     ]);
+    //vote fiels
+    sender.voteOptions.forEach((element, i) => 
+    {
+        var fn_removeVoteitem = qt['sendbox'] + '-' + qt['removeVoteitem'] + '-' + sender._id + '-' + i;
+        var row = [ {'text':`❌ ${element}`, 'callback_data':fn_removeVoteitem} ];
+        detailArr.push(row);
+    });
+
     //attachment
     detailArr.push([ {'text': 'پیوست', 'callback_data': fn_attachment} ]);
     //attached fiels
@@ -126,6 +141,14 @@ var edit = async function(id, detail, userid)
     if(detail.text) sender.text = detail.text;
     if(detail.titel) sender.title = detail.title;
 
+    // vote item
+    // add
+    if(detail.voteOption) 
+        sender.voteOptions.push(detail.voteOption);
+    // remove
+    if(detail.removeVoteOption) 
+        sender.voteOptions.splice(parseInt(detail.removeVoteOption), 1);
+
     // attachment
     // add
     if(detail.attachment) {
@@ -133,7 +156,8 @@ var edit = async function(id, detail, userid)
         sender.attachments.push(detail.attachment);
     }
     // remove
-    if(detail.removeAttachment) sender.attachments.splice(parseInt(detail.removeAttachment), 1);
+    if(detail.removeAttachment) 
+        sender.attachments.splice(parseInt(detail.removeAttachment), 1);
 
     if(sendKey) {
         showSender(userid, sender);
@@ -168,7 +192,7 @@ var routting = async function(message, speratedSection, user)
         create(message);
 
     //delete all message
-    else if (message.text === btns['deleteall'])
+    else if (text === btns['deleteall'])
     {
         await fn.db.sendbox.remove().exec().then();
         show(userid, fn.str['seccess']);
@@ -176,7 +200,7 @@ var routting = async function(message, speratedSection, user)
 
     //edit message - callback query
     else if(speratedSection[3] === mess['gettext'])
-        edit(speratedSection[speratedSection.length-1], {text: message.text}, userid);
+        edit(speratedSection[last], {'text': text}, userid);
 
     //choose an old message
     else if(message.text.includes(fn.mstr[name]['sendboxSymbol']))
@@ -196,6 +220,11 @@ var routting = async function(message, speratedSection, user)
         var sender = await fn.db.sendbox.findOne({'_id': senderid}).exec().then();
         showSender(userid, sender);
     }
+
+    //add vote option
+    else if (speratedSection[last-1] == mess['getVoteItem'])
+        edit(speratedSection[last], {'voteOption': text}, userid);
+
 }
 
 var query = require('./query');

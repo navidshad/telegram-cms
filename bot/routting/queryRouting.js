@@ -9,14 +9,16 @@ var routting = function(query){
         if(!user) return;
 
         //define query route
-        global.mRoutes.forEach(route => {
+        for (let index = 0; index < global.mRoutes.length; index++) 
+        {
+            const route = global.mRoutes[index];
             var result = (route.query) ? route.query({'mName': route.name, 'speratedSection': speratedQuery}) : {'status': false};
-            if(result.status) {
-                result.routting(query, speratedQuery, user, route.name);
-                nothingToRoute = false;
-                return;
-            }
-        });
+            if(!result.status) continue;
+
+            result.routting(query, speratedQuery, user, route.name);
+            nothingToRoute = false;
+            break;
+        }
     });
 }
 

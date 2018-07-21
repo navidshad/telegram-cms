@@ -15,13 +15,19 @@ module.exports.sendbox = {
         gettext:'متن جدید را ارسال کنید.',
         wrongtitle : 'این عنوان قبلا ثبت شده است، لطفا عنوان دیگری انتخواب کنید.',
         contactWadminMess:'لطفا پیام متنی خود را برای مدیر مجموعه ارسال کنید.',
+        getVoteItem:'لطفا عنوان گزینه جدید را برای نظر سنجی ارسال کنید.',
     },
 
     query: {
-        sendbox:'messageToUsers',
-        send :'post',
+        sendbox:'sendbox',
+        send :'send',
         delete :'delete',
         title :'editTitle',
         text :'edit',
+
+        addVoteitem     : 'avi',
+        removeVoteitem  : 'rvi',
+        votting         : 'vting',
+        voteresult      : 'vtr',
     }
 }

@@ -359,6 +359,11 @@ var editMessageText = function (text, option)
     return global.robot.bot.editMessageText(text, option).then();
 }
 
+var editMessageReplyMarkup = function(replyMarkup, option)
+{
+    return global.robot.bot.editMessageReplyMarkup(replyMarkup, option).then();
+}
+
 var sleep = function(ms) 
 {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -385,6 +390,8 @@ module.exports = {
     getModuleOption, putDatasToModuleOption, getModuleRouteMethods, 
     getModuleData, alertadmins, getRoute,
     saveLastMessage, getLastMessage,
-    sendMessage, sendDocument, editMessageText,
     sleep, getStartLink,
+
+    //bot
+    sendMessage, sendDocument, editMessageText, editMessageReplyMarkup,
 }
