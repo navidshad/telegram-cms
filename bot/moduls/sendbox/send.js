@@ -4,6 +4,11 @@ var preparetoSend = async function(userid, sendboxid)
     var item = await global.fn.db.sendbox.findOne({'_id': sendboxid}).exec().then();
     if(!item.text) global.fn.sendMessage(userid, 'شما هنوز متن پیام را ارسال نکرده اید.');
 
+    // reset sendbox statistic
+    item.blocked = 0;
+    await item.save().then();
+    await global.fn.db.sendboxVote.remove({'sendboxid': sendboxid}).exec().then();
+
     // text message
     var link = '@' + robot.username;
     var messateText = item.text + '\n' + '\n' + link;
