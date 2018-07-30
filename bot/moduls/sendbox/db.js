@@ -15,7 +15,7 @@ var sendBoxSchema = new Schema({
   attachments : [attachment],
   voteOptions : [String],
   blocked     : {type: Number, default:0},
-});
+}, { usePushEach: true });
 
 var voteOptionSchema = new Schema({
   index: Number,

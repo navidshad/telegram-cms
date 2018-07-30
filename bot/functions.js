@@ -80,7 +80,9 @@ var saveTelegramFile = async function(id, savePath, callback)
 {
     var link = await global.robot.bot.getFileLink(id).then();
     var stream = fs.createWriteStream(savePath);
-    stream.on('close', (e) =>{
+
+    stream.on('close', (e) =>
+    {
         if(e) { console.log(e); return;}
         console.log('new file has been created on', savePath);
         if(callback) callback(id, savePath);

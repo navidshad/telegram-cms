@@ -10,6 +10,6 @@ var favorItem = new Schema({
 var favoritesSchema = new Schema({
     'userid'    : Number,
     'items'     :[favorItem],
-});
+}, { usePushEach: true });
 
 module.exports.favorites     = mongoose.model('favorites', favoritesSchema);

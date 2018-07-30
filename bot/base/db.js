@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
+mongoose.plugin(schema => { schema.options.usePushEach = true });
 mongoose.set('debug', false);
 mongoose.connect(global.config.dbpath);
 
