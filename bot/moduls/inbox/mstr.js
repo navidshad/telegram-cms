@@ -1,5 +1,5 @@
 module.exports.inbox = {
-    modulename:'ticket',
+    modulename:'inbox',
     //admin
     name:'📬 صندوق پیام ها', 
     back:'🔙 بازگشت به صندوق پیام ها',

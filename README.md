@@ -31,7 +31,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
             'settings'          :true,	// setting module
             'search'            :true,	// search module
             'sendbox'           :true,	// contact form module
-            'contacttousers'    :true,	// a module for send message to users
+            'inbox'             :true,	// a module for send message to users
             'chanelChecker'     :true,	// a module for connecting to a channel
             'favorites'         :true,	// a module to make favorite (favorite posts, etc)
         },

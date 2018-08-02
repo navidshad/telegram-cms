@@ -35,7 +35,7 @@ var checkRoute = function(option){
     return result;
 }
 
-var show = function(userid){
+var show = async function(userid){
     console.log('got to inbox section');
     var titles = [
         fn.mstr.inbox['inboxDeleteAll'],
@@ -43,20 +43,17 @@ var show = function(userid){
     ];
 
     //get message list
-    fn.db.inbox.find({}).sort('-_id').limit(30).exec(function(err, items){       
-        if(items.length > 0){
-            items.forEach(function(item) {
-                var readedSym = fn.mstr.inbox.readSym[0];
-                if(item.readed)  readedSym = fn.mstr.inbox.readSym[1];
-                var title = 'ـ ' + readedSym + ' ' + item.username + ' | ' + item.date;
-                titles.push(title);
-            }, this);
-        }
-        //show list
-        var markup = fn.generateKeyboard({'custom':true, 'grid':true, 'list': titles, 'back':fn.str.goToAdmin['back']}, false);
-        global.fn.sendMessage(userid, fn.mstr['inbox'].name, markup);
-        fn.userOper.setSection(userid, fn.mstr['inbox'].name, true);
-    });
+    var items = await fn.db.inbox.find({}).sort('-_id').limit(30).exec().then();
+    items.forEach(function(item) {
+        var sym = (!item.answered) ? fn.mstr.inbox.readSym[0] : fn.mstr.inbox.readSym[1];
+        var title = 'ـ ' + sym + ' ' + item.username + ' | ' + item.date;
+        titles.push(title);
+    }, this);
+
+    //show list
+    var markup = fn.generateKeyboard({'custom':true, 'grid':true, 'list': titles, 'back':fn.str.goToAdmin['back']}, false);
+    global.fn.sendMessage(userid, fn.mstr['inbox'].name, markup);
+    fn.userOper.setSection(userid, fn.mstr['inbox'].name, true);
 }
 
 var showMessage = function(message){
@@ -86,27 +83,29 @@ var showMessage = function(message){
         });
 }
 
-var answertoMessage = function(message, messid){
+var answertoMessage = async function(message, messid){
 
-    fn.db.inbox.findOne({'_id':messid}, function(ee, item){
-        if(item){
-            answer = 'پیام شما:' + '\n';
-            answer += item.message + '\n \n';
-            answer += 'جواب پیام شما:' + '\n';
-            answer += message.text + '\n';
-            answer += '\n @' + global.robot.username;
-            global.fn.sendMessage(message.from.id, answer);
-            global.fn.sendMessage(item.userid, answer).catch((error) => {
-                console.log(error.code);  // => 'ETELEGRAM'
-                console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
-                if(error.response.statusCode === 403) global.fn.sendMessage(message.from.id, 'این کاربر ربات را block کرده است.'); 
-            });
-            show(message.from.id);
-        }
-        else{
-            global.fn.sendMessage(message.from.id, 'این پیام دیگر موجود نیست');
-        }
+    var item = await fn.db.inbox.findOne({'_id':messid}).then();
+
+    if(!item) {
+        global.fn.sendMessage(message.from.id, 'این پیام دیگر موجود نیست');
+        return;
+    }
+
+    answer = 'پیام شما:' + '\n';
+    answer += item.message + '\n \n';
+    answer += 'جواب پیام شما:' + '\n';
+    answer += message.text + '\n';
+    answer += '\n @' + global.robot.username;
+    global.fn.sendMessage(message.from.id, answer);
+    global.fn.sendMessage(item.userid, answer).catch((error) => {
+        console.log(error.code);  // => 'ETELEGRAM'
+        console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
+        if(error.response.statusCode === 403) global.fn.sendMessage(message.from.id, 'این کاربر ربات را block کرده است.'); 
     });
+
+    await fn.db.inbox.update({'_id':messid}, {'answered': true}).then();
+    show(message.from.id);
 }
 
 var deleteMessage = function(userid, option){
@@ -122,7 +121,8 @@ var deleteMessage = function(userid, option){
 var setting = require('./setting');
 var user = require('./user');
 
-var routting = function(message, speratedSection){
+var routting = function(message, speratedSection)
+{
     //go to inbox
     if(message.text === fn.mstr['inbox'].name || message.text === fn.mstr['inbox'].back)
         show(message.from.id);
