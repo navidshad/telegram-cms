@@ -44,7 +44,8 @@ var routting = function(query, speratedQuery){
         global.fn.sendMessage(query.from.id, fn.mstr.inbox.mess['answer'], fn.generateKeyboard({section:fn.mstr['inbox'].back}, true));
     }
     //delete message
-    else if(speratedQuery[1] === fn.mstr.inbox.query['delete']) deleteMessage(query.from.id, {'id': speratedQuery[last]});
+    else if(speratedQuery[1] === fn.mstr.inbox.query['delete']) 
+        fn.m.inbox.deleteMessage(query.from.id, {'id': speratedQuery[last]});
 }
 
 module.exports = { routting, checkQuery }

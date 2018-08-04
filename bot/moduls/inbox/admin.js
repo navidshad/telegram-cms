@@ -35,7 +35,8 @@ var checkRoute = function(option){
     return result;
 }
 
-var show = async function(userid){
+var show = async function(userid)
+{
     console.log('got to inbox section');
     var titles = [
         fn.mstr.inbox['inboxDeleteAll'],
@@ -56,31 +57,31 @@ var show = async function(userid){
     fn.userOper.setSection(userid, fn.mstr['inbox'].name, true);
 }
 
-var showMessage = function(message){
-        //get date from message
-        seperateText = message.text.split('|');
-        date = seperateText[1];
-        date = (date) ? date.trim() : '';
+var showMessage = async function(message)
+{
+    //get date from message
+    seperateText = message.text.split('|');
+    date = seperateText[1];
+    date = (date) ? date.trim() : '';
 
-        //find message
-        fn.db.inbox.findOne({'date':date}, function(ee, item){
-            if(item){
-                var detailArr = [];
-                var fn_answer = fn.mstr.inbox.query['inbox'] + '-' + fn.mstr.inbox.query['answer'] + '-' + item._id;
-                var fn_delete = fn.mstr.inbox.query['inbox'] + '-' + fn.mstr.inbox.query['delete'] + '-' + item._id;
-                detailArr.push([ 
-                    {'text': 'ارسال پاسخ', 'callback_data': fn_answer},
-                    {'text': 'حذف', 'callback_data': fn_delete}
-                ]);
+    //find message
+    var item = await fn.db.inbox.findOne({'date':date}).then();
+    if(!item) {
+        global.fn.sendMessage(message.from.id, 'این پیام دیگر موجود نیست');
+        return;
+    }
 
-                inboxMess = 'پیام از طرف ' + '@' + item.username +
-                '\n' + 'ــــــــــــــــــــ' + '\n' + item.message + '\n \n @' + global.robot.username;
-                global.fn.sendMessage(message.from.id, inboxMess, {"reply_markup" : {"inline_keyboard" : detailArr}});
-            }
-            else{
-                global.fn.sendMessage(message.from.id, 'این پیام دیگر موجود نیست');
-            }
-        });
+    var detailArr = [];
+    var fn_answer = fn.mstr.inbox.query['inbox'] + '-' + fn.mstr.inbox.query['answer'] + '-' + item._id;
+    var fn_delete = fn.mstr.inbox.query['inbox'] + '-' + fn.mstr.inbox.query['delete'] + '-' + item._id;
+    detailArr.push([ 
+        {'text': 'ارسال پاسخ', 'callback_data': fn_answer},
+        {'text': 'حذف', 'callback_data': fn_delete}
+    ]);
+
+    inboxMess = 'پیام از طرف ' + '@' + item.username +
+    '\n' + 'ــــــــــــــــــــ' + '\n' + item.message + '\n \n @' + global.robot.username;
+    global.fn.sendMessage(message.from.id, inboxMess, {"reply_markup" : {"inline_keyboard" : detailArr}});
 }
 
 var answertoMessage = async function(message, messid){
@@ -143,4 +144,4 @@ var routting = function(message, speratedSection)
 
 var query = require('./query');
 
-module.exports = { name, checkRoute, routting, query, show, user}
+module.exports = { name, checkRoute, routting, query, show, user, deleteMessage}
