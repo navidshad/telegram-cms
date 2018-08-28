@@ -6,7 +6,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 
 ### Note
 - the main language of the cms is persion, but I will make a multilanguage system for it, soon.
-- [here is a chat room on gitter, I'll there to answer yourquestions.](https://gitter.im/telegram-cms/Lobby)
+- [here is a chat room on gitter, I'll be there to answer yourquestions.](https://gitter.im/telegram-cms/Lobby)
 
 ## How to use
 - install it,
