@@ -5,8 +5,9 @@ There is an ability to write your own modules on telegram-cms that I'll explain 
 I'll complete this documentation during my tasks. but here is a simple "how to use"
 
 ### Note
-- The main language of the cms is persion, but I will make a localization system for it, soon.
-- [Here is a chat room on gitter, I'll be there to answer your questions.](https://gitter.im/telegram-cms/Lobby)
+- the main language of the cms is persian, but I will make a localization system for it, soon.
+- [here is a chat room on gitter, I'll be there to answer yourquestions.](https://gitter.im/telegram-cms/Lobby)
+
 
 ## How to use
 - Install it,
