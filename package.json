@@ -41,14 +41,14 @@
     "request-promise": "^4.2.2"
   },
   "deprecated": false,
-  "description": "it is a nodejs application to lunch a telegram bot in seconds with primary components.",
+  "description": "It is a nodejs application to launch a Telegram bot in seconds with primary components.",
   "homepage": "https://github.com/navidshad/telegram-cms#readme",
   "keywords": [
     "telegram",
     "cms",
     "chatbot",
     "tcms",
-    "persion"
+    "persian"
   ],
   "license": "GPL-3.0",
   "main": "index.js",
