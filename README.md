@@ -1,4 +1,4 @@
-# telegram-cms
+# Telegram-CMS
 It is a nodejs application to launch a Telegram bot in seconds with primary components.
 I have been working on Telegram bots for almost 2 years and catched up most of needs for a chatbot. so I made this to solve lots of challenges and launching a bot easily.
 There is an ability to write your own modules on telegram-cms that I'll explain then.
@@ -8,6 +8,11 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - the main language of the cms is persian, but I will make a localization system for it, soon.
 - [here is a chat room on gitter, I'll be there to answer yourquestions.](https://gitter.im/telegram-cms/Lobby)
 
+## Made By telegram-cms
+- [@maaniyab_bot](http://t.me/maaniyab_bot)
+- [@steryobot](http://t.me/steryobot)
+- [@poshakyasin_bot](http://t.me/poshakyasin_bot)
+- [@PinkPanterSbot](http://t.me/PinkPanterSbot)
 
 ## How to use
 - Install it,
