@@ -8,11 +8,13 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - the main language of the cms is persian, but I will make a localization system for it, soon.
 - [here is a chat room on gitter, I'll be there to answer yourquestions.](https://gitter.im/telegram-cms/Lobby)
 
-### sample bots
+
+### Sample Bots
 - [@maaniyab_bot](http://t.me/maaniyab_bot)
 - [@steryobot](http://t.me/steryobot)
 - [@poshakyasin_bot](http://t.me/poshakyasin_bot)
 - [@PinkPanterSbot](http://t.me/PinkPanterSbot)
+
 
 ## How to use
 - Install it,
