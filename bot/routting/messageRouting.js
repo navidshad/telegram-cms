@@ -46,8 +46,10 @@ var routting = async function(message){
                 
                 //go to admin
                 if(text === fn.str.goToAdmin['name'] || text === fn.str.goToAdmin['back'] || speratedSection[1] === fn.str.goToAdmin['name'])
+                {
                     if(user.isAdmin) 
                         fn.adminPanel.routting(message, speratedSection, user);
+                }
             
                 
                 //chanelChecker
