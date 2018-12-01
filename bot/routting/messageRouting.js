@@ -45,9 +45,10 @@ var routting = async function(message){
                 var text = message.text;
                 
                 //go to admin
-                if(text === fn.str.goToAdmin['name'] || text === fn.str.goToAdmin['back'] || speratedSection[1] === fn.str.goToAdmin['name'] && user.isAdmin){
-                    fn.adminPanel.routting(message, speratedSection, user);
-                }
+                if(text === fn.str.goToAdmin['name'] || text === fn.str.goToAdmin['back'] || speratedSection[1] === fn.str.goToAdmin['name'])
+                    if(user.isAdmin) 
+                        fn.adminPanel.routting(message, speratedSection, user);
+            
                 
                 //chanelChecker
                 else if(!user.isAdmin && !user.isMemberOfChannel) {
