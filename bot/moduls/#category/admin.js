@@ -272,6 +272,7 @@ var routting = async function(message, speratedSection)
         console.log('create category', text);
         if(checkInValidCat(text)) global.fn.sendMessage(message.from.id, fn.mstr.post.scErrors[2]);
         else if(fn.checkValidMessage(text)) global.fn.sendMessage(message.from.id, fn.str['chooseOtherText']);
+        else if(text.includes('-') || text.legth > 50) global.fn.sendMessage(message.from.id, fn.str['chooseOtherText']);
         else{
             fn.db.category.findOne({'name': text}).exec((e, category) => {
                 if(!category){ 

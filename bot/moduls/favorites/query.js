@@ -18,28 +18,32 @@ var checkQuery = function(option){
             });
         });
     }
+    
+    console.log(result);
 
     //return
     return result;
 }
 
-var routting = function(query, speratedQuery)
+var routting = function(query, speratedQuery, user)
 {
     var last = speratedQuery.length-1;
     var queryTag = fn.mstr.favorites.query;
+    
+    console.log(speratedQuery);
     
     //remove query message
     global.robot.bot.deleteMessage(query.message.chat.id, query.message.message_id);
 
     //switch like
-    if(speratedQuery[2] === queryTag['like']) fn.eventEmitter.emit('favliked', query, speratedQuery);
+    if(speratedQuery[2] === queryTag['like']) fn.eventEmitter.emit('favliked', query, speratedQuery, user);
 }
 
 // events -------------------------------
-global.fn.eventEmitter.on('favliked', async (query, speratedQuery) =>
+global.fn.eventEmitter.on('favliked', async (query, speratedQuery, user) =>
 {
     var last = speratedQuery.length-1;
-    var item = {}
+    var item = {};
     item.type = speratedQuery[last-1];
     item.id = speratedQuery[last];
 
@@ -50,6 +54,6 @@ global.fn.eventEmitter.on('favliked', async (query, speratedQuery) =>
     if(!post) return;
     item.name = post.name;
 
-    fn.m.favorites.user.addremove(query, item);
+    fn.m.favorites.user.addremove(query, item, user);
 });
 module.exports = { routting, checkQuery }

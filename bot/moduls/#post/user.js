@@ -2,7 +2,8 @@ var show = async function(message, postName, user, optionPrams, callback)
 {
     var option = (optionPrams) ? optionPrams : {};
     var post = await fn.db.post.findOne({'name': postName, 'publish': true}).exec().then();
-
+    var detailArr = [];
+    
     //nothing
     if(!post) {
         if(callback) callback(user);
@@ -11,7 +12,6 @@ var show = async function(message, postName, user, optionPrams, callback)
     
     if(post.isproduct) {
         //inline buttuns
-        var detailArr = [];
         var query = fn.mstr.commerce.query;
         var fn_addToBag = query['commerce'] + '-' + query['user'] + '-' + query['addToBag'] + '-' + 'post' + '-' + post.id;
 

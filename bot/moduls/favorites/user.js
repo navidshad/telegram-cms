@@ -65,7 +65,7 @@ var show = async function(userid)
 }
 
 //add to or remove from favorites
-var addremove = async function(query, newitem)
+var addremove = async function(query, newitem, user)
 {
     var userid = query.from.id;
     var notAdded = true;
@@ -88,7 +88,7 @@ var addremove = async function(query, newitem)
     //save
     await favorites.save();
     //showItem
-    fn.eventEmitter.emit('favshowitem', query.from.id, newitem);
+    fn.eventEmitter.emit('favshowitem', query, newitem, user);
 }
 
 var getbutton = async function(userid, type, id)
@@ -130,17 +130,17 @@ var routting = async function(message, speratedSection, user)
         var fav = null;
 
         favorites.items.map(item => { if(item.name === text) fav = item; });
-
-        if(fav) fn.eventEmitter.emit('favshowitem', userid, fav);
+    
+        if(fav) fn.eventEmitter.emit('favshowitem', message, fav, user);
     }
 }
 
-global.fn.eventEmitter.on('favshowitem', async (userid, item) =>
+global.fn.eventEmitter.on('favshowitem', async (query, item, user) =>
 {
     var types = fn.mstr.favorites.types;
     if(item.type === types['post']){
-        var user = await fn.userOper.checkProfile(query.from.id).then();
-        fn.m.post.user.show(userid, item.name, user);
+        var user = await fn.userOper.checkProfile(user.userid).then();
+        fn.m.post.user.show(query.message, item.name, user);
     }
 });
 

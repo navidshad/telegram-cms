@@ -53,7 +53,7 @@ var routting = async function(message){
             
                 
                 //chanelChecker
-                else if(!user.isAdmin && !user.isMemberOfChannel) {
+                else if(!user.isMemberOfChannel) {
                     fn.m.chanelChecker.InviteUser(message.from.id); 
                     return;
                 }

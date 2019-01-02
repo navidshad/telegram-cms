@@ -61,26 +61,38 @@ var registerChannel = function(chat, messageid)
 var getUser = async function(userid)
 {
     var moduleOption = fn.getModuleOption('chanelChecker');
-    var chatid = 0;
+    var chatid = null;
     var isMember = false;
 
-    if(moduleOption.option.datas.length > 0)
+    for(var i=0; i < moduleOption.option.datas.length; i++)
     {
-        chatid = moduleOption.option.datas[0].more[0].value;
-        chatid = parseInt(chatid);
-    } 
+        let data = moduleOption.option.datas[i];
+        if(data.more[i] && data.more[i].value.toString().startsWith('-'))
+        {
+            chatid = moduleOption.option.datas[i].more[i].value;
+            chatid = parseInt(chatid);
+        }
+    }
 
-    var channel = await global.robot.bot.getChatMember(chatid, userid).then();
+    if(chatid != null)
+    {
+        var channel = await global.robot.bot.getChatMember(chatid, userid).then();
 
-    var status = 'non';
-    if(channel.status) status = channel.status;
-    if(status === 'creator' || status === 'member') isMember = true;
+        var status = 'non';
+        if(channel.status) status = channel.status;
+        if(status === 'creator' || status === 'member') isMember = true;
+        
+        if(channel) global.fn.eventEmitter.emit('affterChannelCheck', userid, isMember);
+    }
 
-    //mandatory Membership
-    var mMembership = fn.getModuleData ('chanelChecker', 'mandatoryMembership');
-    if(mMembership && mMembership.value == 'false') isMember = true;
+    try {
+        //mandatory Membership
+        var mMembership = fn.getModuleData ('chanelChecker', 'mandatoryMembership');
+        if(mMembership && mMembership.value == 'false') isMember = true;
+    } catch (error) {
+        
+    }
 
-    if(channel) global.fn.eventEmitter.emit('affterChannelCheck', userid, isMember);
     return isMember;
 }
 
@@ -88,8 +100,13 @@ var InviteUser = function(userid){
     //console.log('Invite user to be a momber of channel');
     var chanel = '-';
     var moduleOption = fn.getModuleOption('chanelChecker').option;
-    if(moduleOption.datas.length > 0) 
+    
+    try{
         chanel = moduleOption.datas[0].more[0].name;
+    }
+    catch (e) {
+        
+    }
 
     var mess = 'کاربر گرامی شما ابتدا باید در کانال زیر عضو شوید.' + '\n @' + chanel;
     global.fn.sendMessage(userid, mess);

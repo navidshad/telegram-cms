@@ -114,7 +114,7 @@ var routting = function(message, speratedSection){
 
     //change order
     else if (text === fn.str['editOrder']){
-        var remarkup = fn.generateKeyboard({'section': fn.mstr.favorites['backsetting']}, true);
+        var remarkup = fn.generateKeyboard({'section': fn.mstr.favorites['back']}, true);
         global.fn.sendMessage(message.from.id, fn.str['editOrderMess'], remarkup);
         fn.userOper.setSection(message.from.id,  fn.str['editOrder'], true);
     }

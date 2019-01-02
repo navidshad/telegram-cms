@@ -13,7 +13,9 @@ var routting = function(query){
         {
             const route = global.mRoutes[index];
             var result = (route.query) ? route.query({'mName': route.name, 'speratedSection': speratedQuery}) : {'status': false};
+            
             if(!result.status) continue;
+            else if (route.name != speratedQuery[0]) continue;
 
             result.routting(query, speratedQuery, user, route.name);
             nothingToRoute = false;

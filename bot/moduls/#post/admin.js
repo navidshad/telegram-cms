@@ -68,7 +68,7 @@ var createpostMess = function(userid, post){
     var fn_description  = querTag['post'] + '-' + querTag['admin'] + '-' + querTag['description'] + '-' + post._id;
     var fn_delete       = querTag['post'] + '-' + querTag['admin'] + '-' + fn.str.query['delete'] + '-' + post._id;
     var fn_publication  = querTag['post'] + '-' + querTag['admin'] + '-' + fn.str.query['publication'] + '-' + post._id;
-    var fn_order        = querTag['post'] + '-' + querTag['admin'] + '-' + fn.str.query['order'] + '-' + post._id;            
+    var fn_order        = querTag['post'] + '-' + querTag['admin'] + '-' + fn.str.query['queryOrder'] + '-' + post._id;            
     var fn_allowLike    = querTag['post'] + '-' + querTag['admin'] + '-' + querTag['allowlike'] + '-' + post._id;            
     var fn_close        = querTag['post'] + '-' + querTag['admin'] + '-close';
 
@@ -259,16 +259,19 @@ var routting = function(message, speratedSection)
     if(text === fn.mstr.post['name'] || text === fn.mstr.post['back']) showPostList(message.from.id);
 
     //create new post
-    else if(text === fn.mstr.post.postOptions[1]){
+    else if(text === fn.mstr.post.postOptions[1])
+    {
         var mess = fn.mstr.post.edit['newSCMess'];
         var back = fn.mstr.post['back'];
         
         fn.userOper.setSection(message.from.id, fn.mstr.post.postOptions[1], true);        
         global.fn.sendMessage(message.from.id, mess, fn.generateKeyboard({'section': back}, true));
     }
-    else if(speratedSection[last] === fn.mstr.post.postOptions[1]){
+    else if(speratedSection[last] === fn.mstr.post.postOptions[1])
+    {
         if(fn.m.category.checkInValidCat(text)) global.fn.sendMessage(message.from.id, fn.mstr.post.scErrors[0]);
         else if(fn.checkValidMessage(text)) global.fn.sendMessage(message.from.id, fn.str.query['chooseOtherText']);
+        else if(text.includes('-') || text.legth > 50) global.fn.sendMessage(message.from.id, fn.str.query['chooseOtherText']);
         else{
             fn.db.post.findOne({'name': text}).exec((e, post) => {
                 if(!post) ceatePost(message);

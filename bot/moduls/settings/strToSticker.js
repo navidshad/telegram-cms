@@ -53,7 +53,7 @@ var show = async function(userid, txt)
     //make title list
     stickers.map(item => { titles.push(item.name); });
 
-    var section = fn.mstr['settings'].btns['strToSticker'];
+    var section = fn.mstr['settings']['back'];
     var back = fn.mstr['settings'].btns['strToSticker_back'];
     var mess = (txt) ? txt : section;
     var markup = global.fn.generateKeyboard({'custom': true, 'grid':false, 'list': titles, 'back':back}, false);
