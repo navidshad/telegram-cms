@@ -43,6 +43,7 @@ var show = function(userid, injectedtext)
     var list = [
         btns['firstmess'],
         btns['strToSticker'],
+        btns['rowColumns'],
     ];
     var back = fn.str.goToAdmin['back'];
     var mess = (injectedtext) ? injectedtext : fn.mstr.settings['name'];
@@ -97,10 +98,15 @@ var routting = function(message, speratedSection, user, mName)
     //string to sticker
     else if (text === btns['strToSticker'] || speratedSection[3] === btns['strToSticker'])
         strToSticker.routting(message, speratedSection, user, mName);
+
+    // row columns settings
+    else if (text === btns['rowColumns'] || speratedSection[3] === btns['rowColumns'])
+        rowColumns.routting(message, speratedSection, user, mName);
 }
 
-var strToSticker = require('./strToSticker');
+let strToSticker = require('./strToSticker');
+let rowColumns = require('./rowColumns');
 var query = require('./query');
 var upload = require('./upload');
 
-module.exports = { name, checkRoute, query, upload, routting, show, strToSticker }
+module.exports = { name, checkRoute, query, upload, routting, show, strToSticker, rowColumns }

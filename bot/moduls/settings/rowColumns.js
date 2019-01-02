@@ -7,19 +7,19 @@ var showitem = async function (userid, name)
    var detailArr = [];
    var qt = fn.mstr['settings'].query;
 
-   var sticker = qt['settings'] + '-' + qt['admin'] + '-' + qt['strSticker'] + '-' + qt['sticker'] + '-' + btn._id;
-   var fn_delete = qt['settings'] + '-' + qt['admin'] + '-' + qt['strSticker'] + '-' + qt['delete'] + '-' + btn._id;
+   var sticker = qt['settings'] + '-' + qt['admin'] + '-' + qt['rowColumns'] + '-' + qt['addRoww'] + '-' + btn._id;
+   var fn_delete = qt['settings'] + '-' + qt['admin'] + '-' + qt['rowColumns'] + '-' + qt['delete'] + '-' + btn._id;
 
    //edit btns //publication btn
    detailArr.push([ 
-        {'text': 'استیکر', 'callback_data': sticker},
+        {'text': 'افزودن سطر', 'callback_data': sticker},
         {'text': 'حذف', 'callback_data': fn_delete},
     ].reverse());
 
    //create message
    var text = 'اطلاعات دکمه' + '\n' +
    'ــــــــــــــــ' + '\n' +
-   `🔶 نام دکمه: ${btn.name} \n` +
+   `🔶 نام منو: ${btn.name} \n` +
    `🔶 نوع: ${btn.type} \n` +
    `🔶 ایدی: ${btn.fileid} \n\n` +
    'لطفا برای تنظیم استیکر از گزینه های زیر استفاده کنید.';
@@ -47,14 +47,16 @@ var create = async function(userid, name)
 
 var show = async function(userid, txt)
 {
-    var titles = [[ fn.mstr['settings'].btns['addsticker'] ]];
-    var stickers = await fn.db.strStickers.find({}).limit(35).sort('-_id').exec().then();
+    let btns = fn.mstr['settings'].btns;
+    var titles = [[ btns['addMenu'] ]];
+
+    var categories = await fn.db.rowColumns.find({}).limit(35).sort('-_id').exec().then();
     
     //make title list
-    stickers.map(item => { titles.push(item.name); });
+    categories.map(item => { titles.push(item.name); });
 
-    var section = fn.mstr['settings'].btns['strToSticker'];
-    var back = fn.mstr['settings']['back'];
+    var section = fn.mstr['settings']['back'];
+    var back = btns['rowColumns_back'];
     var mess = (txt) ? txt : section;
     var markup = global.fn.generateKeyboard({'custom': true, 'grid':false, 'list': titles, 'back':back}, false);
     global.fn.sendMessage(userid, mess, markup);
@@ -88,19 +90,19 @@ var routting = function(message, speratedSection, user, mName)
     var userid = message.from.id;
 
     //ask to show section
-    if (text === btns['strToSticker'] || text === btns['strToSticker_back'])
+    if (text === btns['rowColumns'] || text === btns['rowColumns_back'])
         show(userid);
 
-    //create new sticker
-    else if (text === btns['addsticker'])
+    //create new category
+    else if (text === btns['addMenu'])
     {
         var mess = fn.mstr['settings'].mess['getstickerName'];
-        var markup = fn.generateKeyboard({'section':btns['strToSticker_back']}, true);
+        var markup = fn.generateKeyboard({'section':btns['rowColumns_back']}, true);
         global.fn.sendMessage(userid, mess, markup);
-        fn.userOper.setSection(userid, btns['addsticker'], true);
+        fn.userOper.setSection(userid, btns['addMenu'], true);
     }
-    //get the title of new message
-    else if(speratedSection[4] === btns['addsticker'])
+    //get the title of new category
+    else if(speratedSection[4] === btns['addMenu'])
         create(userid, text);
 
     //choose an button
@@ -115,8 +117,8 @@ var query = async function(query, speratedQuery, user, mName)
     //upload sticker
     if(speratedQuery[last-1] === queryTag['sticker'])
     {
-        var nSection = fn.str['mainMenu'] + '/' + fn.str.goToAdmin['name'] + '/' + fn.mstr[mName].name + '/' + fn.mstr[mName].btns['strToSticker'] + '/' + fn.mstr[mName].sections['upload'] + '/' + speratedQuery[last];
-        var markup = fn.generateKeyboard({section: fn.mstr[mName].btns['strToSticker_back']}, true);
+        var nSection = fn.str['mainMenu'] + '/' + fn.str.goToAdmin['name'] + '/' + fn.mstr[mName].name + '/' + fn.mstr[mName].btns['rowColumns'] + '/' + fn.mstr[mName].sections['upload'] + '/' + speratedQuery[last];
+        var markup = fn.generateKeyboard({section: fn.mstr[mName].btns['rowColumns_back']}, true);
         var mess = fn.mstr[mName].mess['getSticker'];
 
         global.fn.sendMessage(query.from.id, mess, markup);

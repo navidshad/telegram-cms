@@ -37,7 +37,8 @@ var routting = async function(message){
         if(message.text && message.text === fn.str['backToMenu']) fn.commands.backToMainMenu(message.from.id, user);
         
         //when profile is compelet
-        else if(user.isCompelet){
+        else if(user.isCompelet)
+        {
             //console.log('user profile is compelet');
             //text message
             if(message.text)
