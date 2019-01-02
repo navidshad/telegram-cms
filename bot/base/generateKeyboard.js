@@ -1,23 +1,40 @@
 fn = global.fn;
 
-var custome = function(arr, grid, keys, back, columns)
+var custome = function(arr, grid, keys, back, columns, options={})
 {
     //grid mode
     if(grid){
         var items = arr;
         var row = [];
         var secondPosition = true;
-
+        
+        let rowNumber = 0;
+        let tempColumns = columns;
+        
         //make grid
-        for (var i = 0; i < items.length; i++) {
-            const btn = items[i];
-            row.push(btn);
-
-            if(row.length >= columns || i == items.length-1)
+        for (var i = 0; i < items.length; i) 
+        {
+            // customRows
+            if(options.customRows)
             {
-                keys.reply_markup.keyboard.push(row);
-                row = [];
+                options.customRows.rows.forEach(r => 
+                {
+                    if(r['rowNumber'] == rowNumber) tempColumns = r['totalColumns'];
+                });
             }
+            
+            for(let i2 =0; i2 < tempColumns; i2++)
+            {
+                const btn = items[i];
+                if(btn) row.push(btn);
+                i++;
+            }
+
+            keys.reply_markup.keyboard.push(row);
+            row = [];
+            
+            rowNumber++;
+            tempColumns = columns;
         }
     }
     //list
@@ -38,7 +55,8 @@ var custome = function(arr, grid, keys, back, columns)
     return keys;
 }
 
-module.exports = function(flag, onlyBack, columns){
+module.exports = function(flag, onlyBack, columns)
+{
     columns = (!columns) ? 2 : columns;
     var keys = {
         "reply_markup": {
@@ -54,27 +72,31 @@ module.exports = function(flag, onlyBack, columns){
 
     //costume keyboard
     else if(flag.custom === true){
-        //console.log('generate costume keyboard');
-        return custome(flag.list, flag.grid, keys, flag.back, columns);
+        console.log('generate costume keyboard');
+        return custome(flag.list, flag.grid, keys, flag.back, columns, flag);
     }
 
     //main menu keybard
-    else if(flag.section === fn.str['mainMenu']){
+    else if(flag.section === fn.str['mainMenu'])
+    {
         var items = (flag.list) ? flag.list : [];
-        row = [];
-        var secondPosition = true;
-        for (var i = 0; i < items.length; i++) {
-            var btnsLevel = [];
-            btnsLevel.push(items[i]);
-            if(secondPosition){
-                i +=1;
-                if(i < items.length)
-                    btnsLevel.push(items[i]);
-                secondPosition = false;
-            }
-            if(i < items.length-1){secondPosition = true;}
-            keys.reply_markup.keyboard.push(btnsLevel);
-        }
+        // row = [];
+        // var secondPosition = true;
+        
+        // for (var i = 0; i < items.length; i++) 
+        // {
+        //     var btnsLevel = [];
+        //     btnsLevel.push(items[i]);
+        //     if(secondPosition){
+        //         i +=1;
+        //         if(i < items.length)
+        //             btnsLevel.push(items[i]);
+        //         secondPosition = false;
+        //     }
+        //     if(i < items.length-1){secondPosition = true;}
+        //     keys.reply_markup.keyboard.push(btnsLevel);
+        // }
+        keys = custome(items, true, keys, null, columns, flag);
         //
         if(flag.isAdmin)
             keys.reply_markup.keyboard.push([fn.str.goToAdmin['name']]);

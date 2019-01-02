@@ -21,18 +21,22 @@ module.exports.settings = {
         shorttext : 'لطفا یک متن طولانی تر ارسال کنید.',
         getdomain : 'لطفا آدرس دامنه وبسایتی که به ربات متصل است را ارسال کنید. برای اطلاعات بیشتر از شخص پشتیبان ربات سوال بپرسید.',
         getstickerName:'لطفا نام دکمه ای که میخواهید در پاسخ به آن استیکر ارسال شود را وارد کنید.' + '\nبه ابتدای نام یک - اضافه کنید. مثال "-فروشگاه"',
-        getSticker:'لطفا استیکر مورد نظر خود را ارسال کنید.'
+        getSticker:'لطفا استیکر مورد نظر خود را ارسال کنید.',
+        
+        getCategoryName: 'لطفا نام منویی که میخواهید سطر و ستور اختصاصی برای آن طراحی کنید ارسال کنید.' + '\nبه ابتدای نام یک - اضافه کنید. مثال "-فروشگاه"',
+        getRow: 'لطفا سطر موردنظر را طبق ساختار زیر ارسال کنید.' + '\nformat: [row]-[total columns]\nsample: 2-3\n.' ,
     },
 
     query: {
-        settings:'sets',
+        settings:'settings',
         admin:'a',
         strSticker:'ssticker',
         sticker:'stk',
         delete:'dlt',
 
         rowColumns: 'rc',
-        addRoww: 'arow',
+        addRow: 'arow',
+        deleteRow: 'drow',
     },
 
     sections: {

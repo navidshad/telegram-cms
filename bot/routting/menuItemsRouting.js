@@ -1,5 +1,6 @@
 var showCategoryDir = async function(message, catname, speratedSection, user)
 {
+    console.log('catname', catname);
     var result = await fn.getMenuItems(catname, user);
 
     var items = result.items,
@@ -16,10 +17,18 @@ var showCategoryDir = async function(message, catname, speratedSection, user)
         return;
     }
 
-    fn.userOper.setSection(message.from.id, catname, true);
-    var markup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': items, 'back':back}, false);
-    global.fn.sendMessage(message.from.id, detail.description, markup);
+    let keyBoardOption = {'custom': true, 'grid':true, 'list': items, 'back':back};
+    
+    // check custom rowColumns
+    let customRows = await fn.m['settings'].rowColumns.check(catname);
+    if(customRows) keyBoardOption['customRows'] = customRows;
+    
+    var markup = fn.generateKeyboard(keyBoardOption, false);
+    
+    fn.sendMessage(message.from.id, detail.description, markup);
     fn.m.post.user.snedAttachmentArray(message, detail.attachments, 0);
+    
+    fn.userOper.setSection(message.from.id, catname, true);
 }
 
 var backtoParent = function(message, speratedSection, user)

@@ -256,18 +256,18 @@ var routting = function(message, speratedSection)
     var last = speratedSection.length-1;
     
     //show posts root
-    if(text === fn.mstr.post['name'] || text === fn.mstr.post['back']) showPostList(message.from.id);
+    if(text == fn.mstr.post['name'] || text === fn.mstr.post['back']) showPostList(message.from.id);
 
     //create new post
-    else if(text === fn.mstr.post.postOptions[1])
+    else if(text == fn.mstr.post.postOptions[0])
     {
         var mess = fn.mstr.post.edit['newSCMess'];
         var back = fn.mstr.post['back'];
         
-        fn.userOper.setSection(message.from.id, fn.mstr.post.postOptions[1], true);        
+        fn.userOper.setSection(message.from.id, fn.mstr.post.postOptions[0], true);        
         global.fn.sendMessage(message.from.id, mess, fn.generateKeyboard({'section': back}, true));
     }
-    else if(speratedSection[last] === fn.mstr.post.postOptions[1])
+    else if(speratedSection[last] === fn.mstr.post.postOptions[0])
     {
         if(fn.m.category.checkInValidCat(text)) global.fn.sendMessage(message.from.id, fn.mstr.post.scErrors[0]);
         else if(fn.checkValidMessage(text)) global.fn.sendMessage(message.from.id, fn.str.query['chooseOtherText']);
@@ -281,7 +281,7 @@ var routting = function(message, speratedSection)
     }
 
     //edit name
-    else if(speratedSection[last-1] === fn.mstr.post.edit['name']){
+    else if(speratedSection[last-1] == fn.mstr.post.edit['name']){
         if(fn.m.category.checkInValidCat(text)) global.fn.sendMessage(message.from.id, fn.mstr.post.scErrors[0]);
         else if(fn.checkValidMessage(text)) global.fn.sendMessage(message.from.id, fn.str.query['chooseOtherText']);
         else{
@@ -293,25 +293,25 @@ var routting = function(message, speratedSection)
     }
 
     //edit decription
-    else if (speratedSection[last-1] === fn.mstr.post.edit['description']) 
+    else if (speratedSection[last-1] == fn.mstr.post.edit['description']) 
         editpost(speratedSection[last], {'description': text}, message.from.id);
 
     //edit category
-    else if (speratedSection[last-1] === fn.mstr.post.edit['category']){
+    else if (speratedSection[last-1] == fn.mstr.post.edit['category']){
         var cat = text.split(' - ')[1];
         if(fn.m.category.checkInValidCat(cat)) editpost(speratedSection[last], {'category': cat}, message.from.id);
         else global.fn.sendMessage(message.from.id, fn.str.query['choosethisItems']);
     }
 
     //edit order
-    else if (speratedSection[last-1] === fn.mstr.post.edit['order']) {
+    else if (speratedSection[last-1] == fn.mstr.post.edit['order']) {
         var order = parseInt(text);
         if(!isNaN(order)) editpost(speratedSection[last], {'order': text}, message.from.id);
         else global.fn.sendMessage(message.from.id, fn.mstr.post.edit['order']); 
     }  
         
     //edit price
-    else if (speratedSection[last-1] === fn.mstr.post.edit['price']) {
+    else if (speratedSection[last-1] == fn.mstr.post.edit['price']) {
         var price = parseInt(text);
         if(!isNaN(price) && price > 99) editpost(speratedSection[last], {'price': text}, message.from.id);
         else global.fn.sendMessage(message.from.id, fn.mstr.post.edit['price']); 
@@ -325,7 +325,7 @@ var routting = function(message, speratedSection)
     }
 
     //end attachment
-    else if (speratedSection[last-1] === fn.mstr.post['endAttach']){
+    else if (speratedSection[last-1] == fn.mstr.post['endAttach']){
         fn.db.post.findOne({'_id': speratedSection[last]}).exec((e, post) => {
             if(post) createpostMess(message.from.id, post);           
         });

@@ -14,7 +14,7 @@ let rowSchema = new Schema({
 
 let rowColumnsSchema = new Schema({
   category  : String,
-  row       : [rowSchema]
+  rows       : [rowSchema]
 });
 
 module.exports.strStickers = mongoose.model('strreplacers', strStickerSchema);

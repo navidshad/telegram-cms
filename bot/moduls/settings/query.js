@@ -31,9 +31,13 @@ var routting = function(query, speratedQuery, user, mName)
     //remove query message
     global.robot.bot.deleteMessage(query.message.chat.id, query.message.message_id);
 
-    //switch like
+    // strSticker
     if(speratedQuery[2] === queryTag['strSticker']) 
         fn.m.settings.strToSticker.query(query, speratedQuery, user, mName);
+        
+    // strSticker
+    if(speratedQuery[2] === queryTag['rowColumns']) 
+        fn.m.settings.rowColumns.query(query, speratedQuery, user, mName);
 }
 
 module.exports = { checkQuery, routting }
