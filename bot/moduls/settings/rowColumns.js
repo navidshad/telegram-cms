@@ -151,7 +151,7 @@ var editItem = async function(id, detail, userid, mName)
         
         console.log('removingRow', removingRow, 'rIndex', rIndex);
         
-        if(rIndex != null) menu.rows.splice(rIndex, 1);
+        menu.rows.splice(rIndex, 1);
     }
     
     await menu.save().then();
