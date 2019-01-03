@@ -46,8 +46,11 @@ var settingUp = function()
             var task = {'patams': params, 'callback': callback};
             global.afterStart.push(task)
         });
+        
+        // add module events 
+        global.fn.eventEmitter.on('addNewModule', addModuleToMroutes);
 
-        //get built in modules
+        // get built in modules
         await getMstrs().then();
         await getModuls().then();
         await getFunctions().then();
@@ -71,8 +74,6 @@ var settingUp = function()
 
         // start robot;
         var bot = await create();
-        // runafterstart
-        runafterstart();
 
         resolve(bot);
     });
@@ -100,7 +101,7 @@ var getMstrs = function(path)
             else {
                 //console.log(list);
                 list.forEach(mstr => {
-                    global.fn.mstr = extend(global.fn.mstr, require(mstr));
+                    addMstr(require(mstr));
                 });
                 resolve();
             }
@@ -125,27 +126,51 @@ var getModuls = function(path)
             list.forEach(m =>
             {
                 var emodule = require(m);
+                addModuleToMroutes(emodule);
                 //console.log(emodule.name)
-                global.fn.m[emodule.name] = emodule;
-                
-                //get module route functions
-                var route = {}
-                route.name      = emodule.name;
-                route.admin     = emodule.checkRoute;
-
-                if(emodule.user){
-                    route.user       = emodule.user.checkRoute;
-                    route.getButtons = (emodule.user.getButtons) ? emodule.user.getButtons : null;
-                    route.searchRoute= (emodule.user.searchRoute) ? emodule.user.searchRoute : null;
-                }
-
-                route.upload    = (emodule.upload) ? emodule.upload.checkUpload : null;
-                route.query     = (emodule.query) ? emodule.query.checkQuery : null;
-                global.mRoutes.push(route);
             });
             resolve();
         });
     });
+}
+
+function addModuleToMroutes(newModule)
+{
+    //console.log(newModule.name)
+    global.fn.m[newModule.name] = newModule;
+    
+        // add db if admin has db property
+    if(newModule.db) {
+        let mDB = newModule.db.createModels(global.mongoose);
+        addDBModel(mDB);
+    }
+    // add mstr if admin has it
+    if(newModule.str) addMstr(newModule.str);
+    
+    //get module route functions
+    var route = {}
+    route.name      = newModule.name;
+    route.admin     = newModule.checkRoute;
+
+    if(newModule.user){
+        route.user       = newModule.user.checkRoute;
+        route.getButtons = (newModule.user.getButtons) ? newModule.user.getButtons : null;
+        route.searchRoute= (newModule.user.searchRoute) ? newModule.user.searchRoute : null;
+    }
+
+    route.upload    = (newModule.upload) ? newModule.upload.checkUpload : null;
+    route.query     = (newModule.query) ? newModule.query.checkQuery : null;
+    global.mRoutes.push(route);
+}
+
+function addDBModel(model)
+{
+    global.fn.db = extend(global.fn.db, model);
+}
+
+function addMstr(newStr)
+{
+    global.fn.mstr = extend(global.fn.mstr, newStr);
 }
 
 var getFunctions = function()
@@ -164,13 +189,15 @@ var getDbModels = function(path)
         var dir =  (path) ? path : require('path').join( global.appRoot , 'moduls');
         var option = {'filter':['.js'], 'name':'db'};
         //get Mstr file paths
-        filWalker.walk(dir, option, (e, list) => {
+        filWalker.walk(dir, option, (e, list) => 
+        {
             if(e) reject(e);
             //console.log(list);
             list.forEach(db => {
                 //console.log(db)
                 var model = require(db);
-                global.fn.db = extend(global.fn.db, model);
+                addDBModel(model);
+                //global.fn.db = extend(global.fn.db, model);
             });
             resolve();
         });
@@ -190,5 +217,5 @@ function extend(obj, src)
 var filWalker = require('../lib/filewalker');
 
 module.exports = {
-    settingUp,
+    settingUp, addModuleToMroutes, runafterstart,
 }

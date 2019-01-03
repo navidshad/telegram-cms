@@ -4,6 +4,8 @@ mongoose.plugin(schema => { schema.options.usePushEach = true });
 mongoose.set('debug', false);
 mongoose.connect(global.config.dbpath);
 
+global.mongoose = mongoose;
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() { console.log('db was connected'); });

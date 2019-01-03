@@ -35,45 +35,43 @@ var show = async function(message, postName, user, optionPrams, callback)
     switch (post.type) {
         case fn.mstr.post.types['text'].name:
             console.log('send text post');
-            global.fn.sendMessage(message.from.id, description, option)
-            .then((msg) => {
-                snedAttachmentArray(message, post.attachments, 0);
-            });
+            await global.fn.sendMessage(message.from.id, description, option).then();
             break;
         case fn.mstr.post.types['file'].name:
             console.log('send file post');
-            global.robot.bot.sendDocument(message.chat.id, post.fileid, option)
-            .then((msg) => {
-                snedAttachmentArray(message, post.attachments, 0);
-            });
+            await global.robot.bot.sendDocument(message.chat.id, post.fileid, option).then();
             break;
         case fn.mstr.post.types['photo'].name:
             console.log('send photo post');
-            global.robot.bot.sendPhoto(message.chat.id, post.photoid, option)
-            .then((msg) => {
-                snedAttachmentArray(message, post.attachments, 0);
-            });
+            await global.robot.bot.sendPhoto(message.chat.id, post.photoid, option).then();
             break;
             
         case fn.mstr.post.types['sound'].name:
             console.log('send sound post');
-            global.robot.bot.sendAudio(message.chat.id,post.audioid, option)
-            .then((msg) => {
-                snedAttachmentArray(message, post.attachments, 0);
-            });
+            await global.robot.bot.sendAudio(message.chat.id,post.audioid, option).then();
             break;
 
         case fn.mstr.post.types['video'].name:
             console.log('send video post');
-            global.robot.bot.sendVideo(message.chat.id,post.videoid, option)
-            .then((msg) => {
-                snedAttachmentArray(message, post.attachments, 0);
-            });
+            await global.robot.bot.sendVideo(message.chat.id,post.videoid, option).then();
             break;
     }
+    
+    // send attachments
+    let allowSendAttachments = false;
+    
+    if(post.isproduct)
+    {
+        allowSendAttachments = await fn.m.commerce.user.bag.checkBoughtItem(user.userid, post.id);
+    }
+    else allowSendAttachments = true;
+    
+    if(allowSendAttachments)
+        snedAttachmentArray(message, post.attachments, 0);
 }
 
-var snedAttachmentArray = function(message, attachments, number){
+var snedAttachmentArray = function(message, attachments, number)
+{
     //return 0
     if(attachments.length === 0) return;
     

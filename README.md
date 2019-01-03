@@ -21,8 +21,7 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 - Create an app.js (or what ever you want)
 - Require it and start
 
-...
-
+```
     // this is your app.js file
     var tcms = require('telegram-cms');
 
@@ -54,13 +53,11 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
     
     // initialize the cms
     tcms.start(option);
-    
-...
+```
 
 ## comment events
 
-...
-
+```
     // if nothing to be routed by moduls,
     global.fn.eventEmitter.on('nothingtoroute', (message, speratedSection, user) => {});
 
@@ -72,5 +69,5 @@ I'll complete this documentation during my tasks. but here is a simple "how to u
 
     // schedule an event
     global.fn.eventEmitter.emit('addtoschedule', code, date,  parameters, callback);
+```
 
-...

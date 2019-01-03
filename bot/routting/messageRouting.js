@@ -7,7 +7,7 @@ var routting = async function(message){
     if(message.text && message.text === '/start')                   fn.commands.start(message);
     else if (message.text && message.text === '/getsection')        fn.commands.getsection(message);
     else if (message.text && message.text.includes('/register-'))   fn.commands.registerAdmin(message);
-    else if (message.text && message.text.includes('/getwordcount'))  fn.commands.getWordCount(message.from.id);
+    else if (message.text && message.text.includes('/userid'))  fn.commands.getUserid(message.from.id);
     
     //emit command event
     else if (message.text && message.text.startsWith('/')) 

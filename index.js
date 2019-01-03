@@ -1,4 +1,4 @@
-var botlib = require('./bot/bot');
+let botlib = require('./bot/bot');
 
 // var option = {
 //     dbpath:'',
@@ -9,15 +9,30 @@ var botlib = require('./bot/bot');
 //     domain:'',
 // }
 
-var start = async function start(option)
+let otherModulesToBeAdded = [];
+
+let start = async function start(option)
 {
     // get config
     global.config = option;
     
     var bot = await botlib.settingUp().then();
+    
+    otherModulesToBeAdded.forEach(m => 
+    {
+        global.fn.eventEmitter.emit('addNewModule', m);
+    });
+    
+    botlib.runafterstart();
+    
     return bot;
 }
 
+// this function is for other cms module on npm
+function addModule(newModule){
+    otherModulesToBeAdded.push(newModule);
+}
+
 module.exports = {
-    start
+    start, addModule
 }

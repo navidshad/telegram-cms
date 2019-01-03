@@ -1,5 +1,6 @@
 fn = global.fn;
-var show = function(message){
+var show = function(message)
+{
     fn.userOper.setSection(message.from.id, fn.str.goToAdmin['name'], true);
     markup = fn.generateKeyboard({section:fn.str.goToAdmin['name'], 'list':fn.mstr, 'back':fn.str['backToMenu']}, false);        
     global.fn.sendMessage(message.from.id, fn.str.goToAdmin['name'], markup);

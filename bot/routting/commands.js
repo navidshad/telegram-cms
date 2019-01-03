@@ -47,13 +47,12 @@ var backToMainMenu = async function(userid, user, mess)
     fn.userOper.setSection(userid, fn.str['mainMenu'], false);
 }
 
-//get word counr
-var getWordCount = async function(userid){ 
-    var count = await fn.db.word.count({}).exec().then();
-    var mess = 'تعداد واژه های جستجو شده توسط کاربران: ' + count;
-    global.fn.sendMessage(userid, mess);
+function getUserid(userid)
+{
+    let msg = `🆔 ${userid}`;
+    global.fn.sendMessage(userid, msg);
 }
 
 module.exports = {
-    start, getsection, registerAdmin, backToMainMenu, getWordCount,
+    start, getsection, registerAdmin, backToMainMenu, getUserid
 }
