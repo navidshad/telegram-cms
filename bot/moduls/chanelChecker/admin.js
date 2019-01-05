@@ -80,7 +80,7 @@ var getUser = async function(userid)
 
         var status = 'non';
         if(channel.status) status = channel.status;
-        if(status === 'creator' || status === 'member') isMember = true;
+        if(status === 'creator' || status === 'member' || status === 'administrator') isMember = true;
         
         if(channel) global.fn.eventEmitter.emit('affterChannelCheck', userid, isMember);
     }
