@@ -41,15 +41,30 @@ var get  = async function(callback)
 {
     global.robot.category = [{'name':fn.mstr.category.maincategory, 'parent':'.'}];
     
+    let isAdded = function(cat) {
+        var isAdded = false;
+        
+        global.robot.category.forEach((c) => {
+           if(c.name == cat.name && cat.parent)
+            isAdded = true;
+        });
+        
+        return isAdded;
+    }
+    
     var cats = await fn.db.category.find({}).exec().then();
-    cats.forEach(function(element) 
+    cats.forEach((element) =>
     {
-        global.robot.category.push({
+        console.log(element);
+        
+        var newItem = {
             'name':element.name,
             'parent': element.parent,
             'order':element.order
-        });
-    }, this);
+        };
+        
+        if(!isAdded(element)) global.robot.category.push(newItem);
+    });
 
     if(callback) callback();
 }
@@ -294,7 +309,7 @@ var routting = async function(message, speratedSection)
 
     //edit mode
     else if(text === fn.mstr.category.categoryoptions[0] && checkInValidCat(speratedSection[last])){            
-        console.log('choose a category to delete');
+        console.log('show edit mode');
         var catlist = [];
         deleteCategory.find({'parent': speratedSection[last]}).map((i) => { catlist.push(i.name) });
 
@@ -306,7 +321,7 @@ var routting = async function(message, speratedSection)
         else global.fn.sendMessage(message.from.id, 'در اینجا گزینه ای برای ویرایش وجود ندارد.');
     }
     else if(speratedSection[last] === fn.mstr.category.categoryoptions[0]){
-        console.log('get deletting category');
+        console.log('show category option');
         var catlist = [];
         deleteCategory.find({'parent': speratedSection[last-1]}).map((i) => { catlist.push(i.name) });
         if(!checkInValidCat(text, catlist)) {global.fn.sendMessage(message.from.id, fn.str['choosethisItems']); return;}

@@ -1,10 +1,13 @@
 //find cats by name or parent
-var find = function(option){
-    var matched = []
-    global.robot.category.forEach(function(element) {
+var find = function(option)
+{
+    var matched = [];
+    
+    global.robot.category.forEach((element) => {
         if(option.name && option.name === element.name) matched.push(element);
         else if(option.parent && option.parent === element.parent) matched.push(element);
     }, this);
+    
     return matched;
 }
 //get relativs of a category
