@@ -127,11 +127,16 @@ var createcategoryMess = function(userid, category, option){
     var fn_order        = fn.mstr.category['queryCategory'] + '-' + fn.mstr.category['queryOrder'] + '-' + category._id;    
     var fn_close        = fn.mstr.category['queryCategory'] + '-close';
     
+    var fn_publication  = fn.mstr.category['queryCategory'] + '-' + fn.str.query['publication'] + '-' + category._id;
+    
     detailArr.push([ 
         {'text': 'دسته مادر', 'callback_data': fn_parent},
         {'text': 'توضیح', 'callback_data': fn_description},
         {'text': 'نام', 'callback_data': fn_name}
     ]);
+    
+    //publication
+    var tx_publication = (category.publish) ? fn.str['Published'] +' فعال' : fn.str['NotPublished'] +' غیر فعال';
 
     detailArr.push([
         {'text': 'حذف', 'callback_data': fn_delete},
@@ -140,6 +145,7 @@ var createcategoryMess = function(userid, category, option){
     ]);
 
     detailArr.push([
+        {'text': tx_publication, 'callback_data': fn_publication},
         {'text': 'آپلود پیوست', 'callback_data': fn_attachment}
     ]);
 
@@ -187,46 +193,47 @@ var editcategory = async function(id, detail, userid, speratedSection, ecCallBac
     var sendKey = true;
     var category = await fn.db.category.findOne({"_id": id}).exec().then();
 
-    if(category)
+    if(!category)
     {
-        if(detail.name) {
-            var oldn = category.name;
-            category.name = detail.name;
-            updatePostCategory(oldn, detail.name);
-        }
-        if(detail.parent) category.parent = detail.parent;
-        if(detail.description) category.description = detail.description;
-        if(detail.order) category.order = detail.order;
-
-
-        //attachment
-        //add
-        if(detail.attachment) {
-            speratedSection = speratedSection.splice(speratedSection.length-1, 1);
-            sendKey = false;
-            if(!category.attachments.length === 0) category.attachments = [];
-            category.attachments.push(detail.attachment);
-            global.fn.sendMessage(userid, 'انجام شد');
-        }
-        //remove
-        if(detail.removeAttachment) category.attachments.splice(parseInt(detail.removeAttachment), 1);
-
-        await category.save().then();
-        //get new category
-        global.fn.updateBotContent(() => 
-        {
-            if(!sendKey) return;
-            
-            fn.userOper.setSection(userid, fn.mstr.category.maincategory, true);
-            createcategoryMess(userid, category);
-            showCategoryDir(userid, category.parent, speratedSection); 
-        });
-                        
-        if(ecCallBack) ecCallBack();
-    }
-    else{
         global.fn.sendMessage(userid, 'این منو دیگر وجود ندارد', fn.generateKeyboard({section:fn.str['goTocategory']}));
+        return;
     }
+    
+    if(detail.name) {
+        var oldn = category.name;
+        category.name = detail.name;
+        updatePostCategory(oldn, detail.name);
+    }
+    
+    if(detail.parent) category.parent = detail.parent;
+    if(detail.description) category.description = detail.description;
+    if(detail.order) category.order = detail.order;
+
+
+    //attachment
+    //add
+    if(detail.attachment) {
+        speratedSection = speratedSection.splice(speratedSection.length-1, 1);
+        sendKey = false;
+        if(!category.attachments.length === 0) category.attachments = [];
+        category.attachments.push(detail.attachment);
+        global.fn.sendMessage(userid, 'انجام شد');
+    }
+    //remove
+    if(detail.removeAttachment) category.attachments.splice(parseInt(detail.removeAttachment), 1);
+
+    await category.save().then();
+    //get new category
+    global.fn.updateBotContent(() => 
+    {
+        if(!sendKey) return;
+        
+        fn.userOper.setSection(userid, fn.mstr.category.maincategory, true);
+        createcategoryMess(userid, category);
+        showCategoryDir(userid, category.parent, speratedSection); 
+    });
+                    
+    if(ecCallBack) ecCallBack();
 
 }
 
@@ -236,6 +243,7 @@ var routting = async function(message, speratedSection)
     var text = message.text;
     var last = speratedSection.length-1;
     var catname = (text.split(' - ')[1]) ? text.split(' - ')[1] : text;
+    
     //show category root
     if(text === fn.mstr.category['name'] || text === fn.mstr.category['back']){
         console.log('root gategory');
@@ -353,4 +361,4 @@ var routting = async function(message, speratedSection)
 var query = require('./query');
 var upload = require('./upload');
 
-module.exports = { name, get, checkRoute, routting, query, editcategory, checkInValidCat, deleteCategory, upload }
+module.exports = { name, get, checkRoute, routting, query, createcategoryMess, editcategory, checkInValidCat, deleteCategory, upload }

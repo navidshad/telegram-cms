@@ -107,7 +107,7 @@ var getMenuItems = async function(name, user, callback)
     if(postlist) postlist.forEach(function(element) { items.push({'name':element.name, 'order':element.order}) }, this);
 
     //get child categories
-    var catlist = await fn.db.category.find({'parent': name}, 'name order').exec().then();
+    var catlist = await fn.db.category.find({'parent': name, 'publish': true}, 'name order').exec().then();
     catlist.forEach(function(element) { items.push({'name':element.name, 'order':element.order}) }, this); 
 
     //get modules

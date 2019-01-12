@@ -72,8 +72,9 @@ var removeattachment = function(query,speratedQuery){
     fn.m.category.editcategory(speratedQuery[last-1], {'removeAttachment': speratedQuery[last]}, query.from.id, speratedQuery);
 }
 
-var routting = function(query, speratedQuery){
-    
+var routting = async function(query, speratedQuery, user)
+{
+    var last = speratedQuery.length - 1;    
     //remove query message
     global.robot.bot.deleteMessage(query.message.chat.id, query.message.message_id);
 
@@ -101,6 +102,17 @@ var routting = function(query, speratedQuery){
                 });
             }
         });
+    }
+    
+    // publication
+    else if(speratedQuery[1] === fn.str.query['publication'])
+    {
+        var cat = await fn.db.category.findOne({'_id':speratedQuery[last]}).exec().then();
+        if(cat) {
+            cat.publish = !cat.publish;
+            await cat.save().then();
+            fn.m['category'].createcategoryMess(user.userid, cat);
+        }
     }
 
     else if(speratedQuery[1] === global.fn.str.query['attach']) attachSection(query,speratedQuery)

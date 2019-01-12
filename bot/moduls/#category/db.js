@@ -13,6 +13,7 @@ var categorySchema = new Schema({
   parent:String,
   description: String,
   order:Number,
+  publish: {type: Boolean, default: true},
   attachments :[ attachment ],
 });
 
