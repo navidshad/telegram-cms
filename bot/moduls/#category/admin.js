@@ -143,6 +143,7 @@ var createcategoryMess = function(userid, category, option){
     var fn_close        = fn.mstr.category['queryCategory'] + '-close';
     
     var fn_publication  = fn.mstr.category['queryCategory'] + '-' + fn.str.query['publication'] + '-' + category._id;
+    var fn_sendAll      = fn.mstr.category['queryCategory'] + '-' + fn.mstr.category['sendall'] + '-' + category._id;
     
     detailArr.push([ 
         {'text': 'دسته مادر', 'callback_data': fn_parent},
@@ -152,6 +153,7 @@ var createcategoryMess = function(userid, category, option){
     
     //publication
     var tx_publication = (category.publish) ? fn.str['Published'] +' فعال' : fn.str['NotPublished'] +' غیر فعال';
+    var tx_sendall = (category.sendAll) ? fn.str['Published'] +' ارسال یکجا' : fn.str['NotPublished'] +' ارسال یکجا';
 
     detailArr.push([
         {'text': 'حذف', 'callback_data': fn_delete},
@@ -161,6 +163,7 @@ var createcategoryMess = function(userid, category, option){
 
     detailArr.push([
         {'text': tx_publication, 'callback_data': fn_publication},
+        {'text': tx_sendall, 'callback_data': fn_sendAll},
         {'text': 'آپلود پیوست', 'callback_data': fn_attachment}
     ]);
 

@@ -78,7 +78,7 @@ var createpostMess = function(userid, post){
     tx_sound    =fn.mstr.post.types['sound'].icon, 
     tx_video    =fn.mstr.post.types['video'].icon;
 
-    console.log(post.type)
+    //console.log(post.type)
     if(post.type === 'text')       tx_text = tx_text + ' ' + fn.str['Published'];
     else if(post.type === 'file')  tx_file = tx_file + ' ' + fn.str['Published'];
     else if(post.type === 'photo') tx_photo = tx_photo + ' ' + fn.str['Published'];
@@ -199,7 +199,11 @@ var editpost = async function(id, detail, userid, ecCallBack)
     var post = await fn.db.post.findOne({"_id": id}).exec().then();
     if(!post) global.fn.sendMessage(userid, 'این مطلب دیگر وجود ندارد');
 
-    if(detail.name) post.name                       = detail.name;
+    if(detail.name) {
+        fn.eventEmitter.emit('editFavorite', 
+        {'oldName': post.name, 'newName': detail.name});
+        post.name = detail.name;
+    }
     if(detail.category) post.category               = detail.category;
     if(detail.description) post.description         = detail.description;
     if(detail.type) post.type            = detail.type;

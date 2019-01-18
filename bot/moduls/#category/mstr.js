@@ -27,6 +27,8 @@ module.exports.category = {
     queryOrder              :'order',
     queryDelete             :'del',
     
+    sendall                 :'sall',
+    
     attach                  :'atting',
     attachment              :'att',
     removeAttachment        :'ratt',

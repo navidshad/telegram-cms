@@ -172,8 +172,14 @@ var routting = async function(query, speratedQuery)
         fn.m.post.editpost(speratedQuery[last], {'publish': 'switch'}, query.from.id);
     }
 
-    //delete message
-    else if(speratedQuery[2] === global.fn.str.query['delete']){
+    //delete post
+    else if(speratedQuery[2] === global.fn.str.query['delete'])
+    {
+        var post = await fn.db.post.findOne({'_id': speratedQuery[last]}, 'name').exec().then();
+        
+        if(post) 
+            global.fn.eventEmitter.emit('deleteFavorite', {'oldName': post.name});
+        
         fn.db.post.remove({'_id': speratedQuery[last]}, function(err){
             global.fn.m.post.showPostList(query.from.id, fn.str.query['seccess']);
             global.fn.updateBotContent();

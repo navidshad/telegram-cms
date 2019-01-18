@@ -14,6 +14,7 @@ var categorySchema = new Schema({
   description: String,
   order:Number,
   publish: {type: Boolean, default: true},
+  sendAll: {type: Boolean, default: false},
   attachments :[ attachment ],
 });
 

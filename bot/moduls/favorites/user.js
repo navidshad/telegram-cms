@@ -138,9 +138,11 @@ var routting = async function(message, speratedSection, user)
 global.fn.eventEmitter.on('favshowitem', async (query, item, user) =>
 {
     var types = fn.mstr.favorites.types;
-    if(item.type === types['post']){
+    
+    if(item.type === types['post'])
+    {
         var user = await fn.userOper.checkProfile(user.userid).then();
-        fn.m.post.user.show(query.message, item.name, user);
+        fn.m.post.user.show(query, item.name, user);
     }
 });
 

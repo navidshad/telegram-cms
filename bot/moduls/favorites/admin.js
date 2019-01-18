@@ -133,4 +133,7 @@ var routting = function(message, speratedSection){
 var user    = require('./user');
 var query   = require('./query');
 
+// events
+require('./events');
+
 module.exports = { name, checkRoute, routting, user, query }

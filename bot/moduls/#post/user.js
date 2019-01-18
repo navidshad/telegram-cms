@@ -76,7 +76,7 @@ var snedAttachmentArray = function(message, attachments, number)
     if(attachments.length === 0) return;
     
     var nextItem = number +1;
-    console.log('attachment length ', attachments.length, number);
+    //console.log('attachment length ', attachments.length, number);
     send(message, attachments[number].id, attachments[number].type, attachments[number].caption, () => {
     if(attachments.length > nextItem) snedAttachmentArray(message, attachments, nextItem);
   });
@@ -102,6 +102,16 @@ var send = function(message, resid, type, caption, callback){
             .then(() => { if(callback) callback() });
             break;
     }
+}
+
+async function sendAllPost(categoryName, message, user)
+{
+    var posts = await fn.db.post.find({'category': categoryName, 'publish': true}).exec().then();
+    
+    console.log('sendAllPost', posts.length);
+    
+    for(var i =0; i < posts.length; i++)
+        await show(message, posts[i].name, user);
 }
 
 var makebtntitle = function(post)
@@ -140,4 +150,4 @@ global.fn.eventEmitter.on('searchshowitem', async (message, speratedSection) =>
         global.fn.sendMessage(message.user.id, fn.str['choosethisItems']);
     });
 });
-module.exports = { show, snedAttachmentArray, searchRoute }
+module.exports = { show, snedAttachmentArray, searchRoute, sendAllPost }

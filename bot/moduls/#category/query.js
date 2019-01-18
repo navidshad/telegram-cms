@@ -114,6 +114,17 @@ var routting = async function(query, speratedQuery, user)
             fn.m['category'].createcategoryMess(user.userid, cat);
         }
     }
+    
+    // send all 
+    else if(speratedQuery[1] === fn.mstr.category['sendall'])
+    {
+        var cat = await fn.db.category.findOne({'_id':speratedQuery[last]}).exec().then();
+        if(cat) {
+            cat.sendAll = !cat.sendAll;
+            await cat.save().then();
+            fn.m['category'].createcategoryMess(user.userid, cat);
+        }
+    }
 
     else if(speratedQuery[1] === global.fn.str.query['attach']) attachSection(query,speratedQuery)
     else if(speratedQuery[1] === fn.str.query['removeAttachment']) removeattachment(query,speratedQuery);

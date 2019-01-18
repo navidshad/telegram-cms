@@ -50,17 +50,22 @@ var backtoParent = function(message, speratedSection, user)
 
 
 //routting
-var routting = function(message, speratedSection, user){
+var routting = async function(message, speratedSection, user)
+{
     var text = message.text;
     var last = speratedSection.length-1;
 
     //back to uper level
     if(text === fn.mstr.category['backtoParent'])
-        backtoParent(message, speratedSection, user);
+    {
+        console.log('backtoParent', text);
+        backtoParent(message, speratedSection, user);   
+    }
 
     //back to a category
-    else if(text.includes(fn.str['back']) && text.split(' - ')[1]){
-        //console.log('back to category', text);
+    else if(text.includes(fn.str['back']) && text.split(' - ')[1])
+    {
+        console.log('back to category', text);
         var catname = text.split(' - ')[1];
         speratedSection.splice(last, 1);
         fn.userOper.setSection(message.from.id, catname, true);
@@ -68,10 +73,16 @@ var routting = function(message, speratedSection, user){
     }
 
     //go to category
-    else if(fn.m.category.checkInValidCat(text)){
-        //console.log('go to category', text);
-        speratedSection.push(text);
-        showCategoryDir(message, text, speratedSection, user);
+    else if(fn.m.category.checkInValidCat(text))
+    {
+        console.log('go to category', text);
+        let category = await fn.db.category.findOne({'name': text}, 'sendAll').exec().then();
+        
+        if(category.sendAll) fn.m.post.user.sendAllPost(text, message, user);
+        else {
+            speratedSection.push(text);
+            showCategoryDir(message, text, speratedSection, user);   
+        }
     }
 
     //go to a post  
