@@ -33,7 +33,7 @@ var UserSchema = new Schema({
     isCompelet  : Boolean,
     section     : String,
     datas       : [data],
-    date        : Date
+    date        : {type: Date, defualt: Date.today()},
 });
 
 var ConfigSchema = new Schema({

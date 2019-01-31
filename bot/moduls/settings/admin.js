@@ -44,11 +44,26 @@ var show = function(userid, injectedtext)
         btns['firstmess'],
         btns['strToSticker'],
         btns['rowColumns'],
+        btns['statistic'],
     ];
     var back = fn.str.goToAdmin['back'];
     var mess = (injectedtext) ? injectedtext : fn.mstr.settings['name'];
     var replymarkup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': list, 'back':back}, false);
     global.fn.sendMessage(userid, mess, replymarkup);        
+}
+
+async function showStatistic(userid)
+{
+    let state = '📊 ' + 'آمار ' + '\n\n';
+    
+    // users
+    let usersState = await fn.db.user.count().exec().then();
+    let newUserState = await fn.db.user.count({'date': Date.today()}).exec().then();
+    
+    state += '👥 کاربران ' + usersState + '\n';
+    state += '👤 کاربران امروز ' + newUserState + '\n .';
+    
+    global.fn.sendMessage(userid, state);   
 }
 
 var routting = function(message, speratedSection, user, mName)
@@ -102,6 +117,10 @@ var routting = function(message, speratedSection, user, mName)
     // row columns settings
     else if (text === btns['rowColumns'] || speratedSection[3] === btns['rowColumns'])
         rowColumns.routting(message, speratedSection, user, mName);
+        
+    //show statistic
+    else if(text == btns['statistic'])
+        showStatistic(user.userid);
 }
 
 let strToSticker = require('./strToSticker');
