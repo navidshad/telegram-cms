@@ -46,7 +46,7 @@ function sendRequestToGoogleAnalytic (parameters)
     if(!isModuleActive) return;
      
     // create query parameters
-    let query = Object.assign({ 'v':'1', 'tid':trackid.value } , parameters);
+    let query = Object.assign({ 'v':'1', 'tid':trackid.value, 'dr':'bot' } , parameters);
     
     // create url
     let url = buildUrl('https://google-analytics.com', {
@@ -59,26 +59,26 @@ function sendRequestToGoogleAnalytic (parameters)
     //console.log('Google Analytic, Tracking', query);
 }
 
-function trackPage(userid, page, title)
+function trackPage(userid, page, title, source, options={})
 {
-    let pageQuery = {
+    let pageQuery = Object.assign({
         'cid': userid,
         't':'pageview',
         'dp':page,
-        'dt': title
-    };
+        'dt': title,
+    }, options);
     
     sendRequestToGoogleAnalytic(pageQuery);
 }
 
-function trackEvent(userid, category, action, label, value)
+function trackEvent(userid, category, action, label, value, options={})
 {
-    let eventQuery = {
+    let eventQuery = Object.assign({
       'cid': userid,
       't' :'event',
       'ec':category,
       'ea':action,
-    };
+    }, options);
     
     if(label != null) eventQuery['el'] = label;
     if(value != null) eventQuery['ev'] = value;
