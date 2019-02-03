@@ -55,7 +55,7 @@ var get  = async function(callback)
     var cats = await fn.db.category.find({}).exec().then();
     cats.forEach((element) =>
     {
-        console.log(element);
+        //console.log(element);
         
         var newItem = {
             'name':element.name,

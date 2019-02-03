@@ -79,9 +79,14 @@ var addremove = async function(query, newitem, user)
         notAdded = false;
         index = i;
     });
+    
+    let eventAction = 'add';
 
     //remove
-    if(index !== null) favorites.items = favorites.items.splice(index+1, 1);
+    if(index !== null) {
+        eventAction = 'remove';
+        favorites.items = favorites.items.splice(index+1, 1);
+    }
     //add
     else if(notAdded) favorites.items.push(newitem);
 
@@ -89,6 +94,11 @@ var addremove = async function(query, newitem, user)
     await favorites.save();
     //showItem
     fn.eventEmitter.emit('favshowitem', query, newitem, user);
+    
+    // analytic
+    let eventCategory = 'favorite';
+    let eventLabel = newitem.name;
+    fn.m.analytic.trackEvent(user.userid, eventCategory, eventAction, eventLabel);
 }
 
 var getbutton = async function(userid, type, id)

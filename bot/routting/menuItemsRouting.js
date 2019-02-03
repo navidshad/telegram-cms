@@ -29,6 +29,11 @@ var showCategoryDir = async function(message, catname, speratedSection, user)
     fn.m.post.user.snedAttachmentArray(message, detail.attachments, 0);
     
     fn.userOper.setSection(message.from.id, catname, true);
+    
+    // analytic
+    let pageName = catname;
+    let label = 'category';
+    fn.m.analytic.trackPage(message.from.id, pageName, label);
 }
 
 var backtoParent = function(message, speratedSection, user)

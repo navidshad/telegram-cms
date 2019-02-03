@@ -33,7 +33,8 @@ var checkRoute = function(option){
     return result;
 }
 
-var alertToAmin = function(newMess){
+var alertToAmin = function(newMess)
+{
     fn.db.user.find({'isAdmin': true}, 'userid').exec((e, admins) => {
         //user message
         inboxMess = 'پیام از طرف ' + '@' + newMess.username +
@@ -48,7 +49,36 @@ var alertToAmin = function(newMess){
     });
 }
 
-var routting = function(message, speratedSection){
+function receiveMessage(message, user)
+{
+    console.log('send user message to admin');
+    var userMessage = 'شما از طرف ' + message.from.username + ' یک پیام دریافت کرده اید.' + '\n' +
+    'ــــــــــــــــــــ' + '\n' +  message.text;
+
+    //time
+    var time = fn.time.gettime();
+    
+    //save to inbox
+    var newInboxMess = new global.fn.db.inbox({
+        'readed'      : false,
+        'messId'      : message.message_id,
+        'date'        : time,
+        'userid'      : user.userid,
+        'username'    : user.username,
+        'message'     : message.text
+    });
+    newInboxMess.save();
+    alertToAmin(newInboxMess);
+    fn.commands.backToMainMenu(message.from.id, user, fn.str['seccess']);
+    
+    // analytic
+    let eventCategory = 'inbox';
+    let eventAction = 'receive message';
+    fn.m.analytic.trackEvent(user.userid, eventCategory, eventAction);
+}
+
+var routting = function(message, speratedSection, user)
+{
     var last = speratedSection.length-1;
     //ask to send massage to admin
     if (message.text === fn.mstr['inbox'].lable){
@@ -56,29 +86,8 @@ var routting = function(message, speratedSection){
         fn.userOper.setSection(message.from.id, fn.mstr['inbox'].lable, true);        
         global.fn.sendMessage(message.from.id, fn.mstr['inbox'].getmess, fn.generateKeyboard({section:fn.str['backToMenu']}, true));
     }
-    else if(speratedSection[last] === fn.mstr['inbox'].lable){
-        console.log('send user message to admin');
-        var userMessage = 'شما از طرف ' + message.from.username + ' یک پیام دریافت کرده اید.' + '\n' +
-        'ــــــــــــــــــــ' + '\n' +  message.text;
-
-        fn.userOper.checkProfile(message.from.id, (user) => {
-            //time
-            var time = fn.time.gettime();
-            
-            //save to inbox
-            var newInboxMess = new global.fn.db.inbox({
-                'readed'      : false,
-                'messId'      : message.message_id,
-                'date'        : time,
-                'userid'      : user.userid,
-                'username'    : user.username,
-                'message'     : message.text
-            });
-            newInboxMess.save();
-            alertToAmin(newInboxMess);
-            fn.commands.backToMainMenu(message.from.id, user, fn.str['seccess']);
-        });
-    }
+    else if(speratedSection[last] === fn.mstr['inbox'].lable)
+        receiveMessage(message, user);
 }
 
 module.exports = { routting, checkRoute }

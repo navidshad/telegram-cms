@@ -79,6 +79,13 @@ var search = async function(userid, text)
     var markup = fn.generateKeyboard({'custom': true, 'grid':true, 'list': list, 'back':back}, false);
     global.fn.sendMessage(userid, mess, markup);
     fn.userOper.setSection(userid, fn.mstr.search['result'], true);
+    
+    // analytic
+    let eventCategory = 'search';
+    let eventAction = 'all';
+    let eventLabel = text;
+    let eventValue = results.length;
+    fn.m.analytic.trackEvent(userid, eventCategory, eventAction, eventLabel, eventValue);
 }
 
 var showItem = function(message, name){

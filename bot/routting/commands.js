@@ -44,6 +44,11 @@ var backToMainMenu = async function(userid, user, mess)
     
     global.fn.sendMessage(userid, texttosend, remarkup);
     fn.userOper.setSection(userid, fn.str['mainMenu'], false);
+    
+    // analytic
+    let page = 'صفحه اصلی';
+    let label = 'category';
+    fn.m.analytic.trackPage(userid, page, label);
 }
 
 function getUserid(userid)

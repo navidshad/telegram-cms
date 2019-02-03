@@ -57,17 +57,25 @@ var show = async function(message, postName, user, optionPrams, callback)
             break;
     }
     
+    let eventCategory = 'post';
+    
     // send attachments
     let allowSendAttachments = false;
     
     if(post.isproduct)
     {
+        eventCategory = 'product';
         allowSendAttachments = await fn.m.commerce.user.bag.checkBoughtItem(user.userid, post.id);
     }
     else allowSendAttachments = true;
     
     if(allowSendAttachments)
         snedAttachmentArray(message, post.attachments, 0);
+        
+    // analytic
+    let eventAction = 'show';
+    let eventLabel = postName;
+    fn.m.analytic.trackEvent(user.userid, eventCategory, eventAction, eventLabel);
 }
 
 var snedAttachmentArray = function(message, attachments, number)
