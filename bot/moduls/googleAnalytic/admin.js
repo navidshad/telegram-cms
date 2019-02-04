@@ -56,7 +56,7 @@ function sendRequestToGoogleAnalytic (parameters)
     
     fn.request.post(url);
     
-    //console.log('Google Analytic, Tracking', query);
+    console.log('Google Analytic, Tracking', query);
 }
 
 function trackPage(userid, page, title, source, options={})
@@ -84,6 +84,33 @@ function trackEvent(userid, category, action, label, value, options={})
     if(value != null) eventQuery['ev'] = value;
     
     sendRequestToGoogleAnalytic(eventQuery);
+}
+
+function trackTransaction(userid, factorNumber, price, options)
+{
+    let query = Object.assign({
+      'cid': userid,
+      't' :'transaction',
+      'ti':factorNumber,
+      'tr':(price * 10).toFixed(2),
+      'cu':'IRR'
+    }, options);
+    
+    sendRequestToGoogleAnalytic(query);
+}
+
+function trackItem(userid, factorNumber, price, name, options)
+{
+    let query = Object.assign({
+      'cid': userid,
+      't' :'transaction',
+      'ti':factorNumber,
+      'ip':(price * 10).toFixed(2),
+      'in':name,
+      'cu':'IRR'
+    }, options);
+    
+    sendRequestToGoogleAnalytic(query); 
 }
 
 var routting = function(message, speratedSection, user)
@@ -114,4 +141,6 @@ module.exports = {
     
     trackPage,
     trackEvent,
+    trackTransaction,
+    trackItem,
 }
