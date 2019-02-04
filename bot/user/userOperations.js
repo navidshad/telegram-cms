@@ -23,6 +23,7 @@ var registerId = async function(flag, regCallback)
         flag.isAdmin = isAdmin;
         flag.isCompelet = true;
         flag.section = fn.str['mainMenu'];
+        flag.date = Date.today();
         user = await new fn.db.user(flag).save().then();
         console.log('user has been registered');
     }
