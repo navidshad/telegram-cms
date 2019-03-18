@@ -56,7 +56,7 @@ function sendRequestToGoogleAnalytic (parameters)
     
     fn.request.post(url);
     
-    console.log('Google Analytic, Tracking', query);
+    //console.log('Google Analytic, Tracking', query);
 }
 
 function trackPage(userid, page, title, source, options={})

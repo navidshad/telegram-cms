@@ -7,7 +7,7 @@ module.exports.sendbox = {
 
     btns: {
         newmess:'پیام جدید',
-        deleteall:'حذف همه از لیست',
+        settings : '⚙️' + ' - ' + 'تنظیمات',
     },
 
     mess: {
@@ -20,6 +20,8 @@ module.exports.sendbox = {
 
     query: {
         sendbox:'sendbox',
+        admin       : 'a',
+        settings    : 'stings',
         send :'send',
         delete :'delete',
         title :'editTitle',
@@ -29,5 +31,27 @@ module.exports.sendbox = {
         removeVoteitem  : 'rvi',
         votting         : 'vting',
         voteresult      : 'vtr',
+    },
+
+    datas: {
+
+        retantionCheckerStatus: {
+            'name'  : 'پیام اتوماتیک',
+            'mess'  : 'این قابلیت به کاربرانی که مدت طولانی است به ربات سر نزده اند پیام اتوماتیک ارسال میکند.',
+            'items' : [
+                {'name': 'true', 'lable':'فعال'},
+                {'name': 'false', 'lable':'غیر فعال'},
+            ]
+        },
+
+        retantionCheckerDays: {
+            'name'  : 'روز',
+            'mess'  : 'بعد از چند روز عدم فعالیت کاربران به آنها پیام اتوماتیک ارسال شود؟',
+        },
+
+        retantionCheckerTime: {
+            'name'  : 'ساعت',
+            'mess'  : 'ساعتی که مایل هستید پیام اتوماتیک به کاربران ارسال شود را مشخص کنید. \nsample: 15:30',
+        },
     }
 }

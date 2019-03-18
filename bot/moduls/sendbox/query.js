@@ -180,6 +180,10 @@ routting = async function(query, speratedQuery, user, mName)
     var last = speratedQuery.length-1;
     var qt = global.fn.mstr.sendbox.query;
 
+    //admin settings
+    if(speratedQuery[1] === qt['admin'] && speratedQuery[2] === qt['settings'])
+        fn.m[mName].settings.query(query, speratedQuery, user, mName);
+
     //remove query message
     if(speratedQuery[1] !== qt['votting'] && speratedQuery[1] !== qt['voteresult']) 
         close(query);

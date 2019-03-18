@@ -3,7 +3,11 @@ var name = 'sendbox';
 var checkRoute = function(option)
 {
 
-    var btnsArr  = [ fn.mstr[name]['name'] ];
+    var btnsArr  = [ 
+        fn.mstr[name]['name'],
+        fn.mstr[name].btns['settings'],
+    ];
+
     var result = {}
     //check text message
     if(option.text) btnsArr.forEach(btn => { 
@@ -36,7 +40,7 @@ var checkRoute = function(option)
 var show = async function(userid, txt)
 {
     var titles = [[
-        fn.mstr[name].btns['deleteall'],
+        fn.mstr[name].btns['settings'],
         fn.mstr[name].btns['newmess']
     ]];
     
@@ -225,10 +229,14 @@ var routting = async function(message, speratedSection, user)
     else if (speratedSection[last-1] == mess['getVoteItem'])
         edit(speratedSection[last], {'voteOption': text}, userid);
 
+    // go to setting
+    else if(speratedSection[3] === btns['settings'] || text == btns['settings']) 
+        settings.routting(message, speratedSection, user, name);
 }
 
+var settings = require('./settings');
 var query = require('./query');
 var upload = require('./upload');
 var send = require('./send');
 
-module.exports = { name, checkRoute, routting, query, show, edit, showSender, upload, send }
+module.exports = { name, checkRoute, routting, query, show, edit, showSender, upload, send, settings }

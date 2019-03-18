@@ -29,6 +29,7 @@ var UserSchema = new Schema({
     last_name	  : String,
     language_code:String,
 
+    blocked     : {type:Boolean, default: false},
     isAdmin     : Boolean,
     isCompelet  : Boolean,
     section     : String,
