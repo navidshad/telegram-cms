@@ -83,10 +83,11 @@ var sendMessToNextUser = async (op, addToNext) =>
     var user  = await global.fn.db.user.findOne(queryObject).sort({'userid':1}).skip(skip).exec().then();
     var msent = await global.fn.sendMessage(user.userid, op.mess, op.markup).then()
     .catch(e => {
-      console.log(e);
-      if(e.response.statusCode == 403) 
+      console.log(`sendbox error to ${user.userid} | statusCode ${e.response.statusCode}`);
+      if(e.response.statusCode == 403){
         global.fn.db.sendbox.update({'_id': op.sender._id}, { $inc: {blocked: 1}}).exec();
         global.fn.db.user.update({userid:user.userid}, {$set: {blocked: true}}).exec();
+      }
     });
 
     //attachment
