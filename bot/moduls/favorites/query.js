@@ -19,7 +19,7 @@ var checkQuery = function(option){
         });
     }
     
-    console.log(result);
+    //console.log(result);
 
     //return
     return result;

@@ -1,6 +1,6 @@
 var showCategoryDir = async function(message, catname, speratedSection, user)
 {
-    console.log('catname', catname);
+    //console.log('catname', catname);
     var result = await fn.getMenuItems(catname, user);
 
     var items = result.items,

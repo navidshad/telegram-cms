@@ -12,9 +12,13 @@ var preparetoSend = async function(userid, sendboxid)
     if(!item.text) global.fn.sendMessage(userid, 'شما هنوز متن پیام را ارسال نکرده اید.');
 
     // reset sendbox statistic
-    item.blocked = 0;
-    await item.save().then();
-    await global.fn.db.sendboxVote.remove({'sendboxid': sendboxid}).exec().then();
+    let sendFromData = global.fn.getModuleData('sendbox', 'sendFrom');
+    if(sendFromData.value == null || sendFromData.value == '0')
+    {
+        item.blocked = 0;
+        await item.save().then();
+        await global.fn.db.sendboxVote.remove({'sendboxid': sendboxid}).exec().then();
+    }
 
     // text message
     var link = '@' + robot.username;
@@ -34,6 +38,15 @@ var preparetoSend = async function(userid, sendboxid)
     global.fn.eventEmitter.emit('sendtoall', userid, item, messateText, item.attachments, markup);
 }
 
+function isEven(number) {
+    let reminder = number % 2;
+    let isEven = true;
+
+    if (reminder != 0) isEven = false;
+    
+    return isEven;
+}
+
 global.fn.eventEmitter.on('sendtoall', async (userid, sender, text, attachments, markup={}) =>
 {
     var usercount = await global.fn.db.user.count(queryObject).exec().then();
@@ -50,18 +63,33 @@ global.fn.eventEmitter.on('sendtoall', async (userid, sender, text, attachments,
     }
     option.totalGroup = Math.ceil(option.total / option.perGroup);
 
+    // get sendFrom option
+    let sendFromData = global.fn.getModuleData('sendbox', 'sendFrom');
+    if(sendFromData.value != null)
+    {
+        let sendFrom = parseInt(sendFromData.value);
+        option.next = sendFrom;
+        option.counter = sendFrom;
+    }
+
     // odd & even
     let addToNext = 1;
     if(sender.title.toLowerCase().includes('odd')){
         addToNext = 2;
-        option.next = 1;
+        option.next = (option.next == 0) ? 1 : option.next;
         option.total = Math.floor(usercount/2);
+
+        if(isEven(option.next)) option.next++;
     }
     else if(sender.title.toLowerCase().includes('even')){
         addToNext = 2;
-        option.next = 0;
+        option.next = (option.next == 0) ? 0 : option.next;
         option.total = Math.ceil(usercount/2);
+
+        if(!isEven(option.next)) option.next++;
     }
+
+
 
     //send report message
     var rMess = 'گزارش ارسال برای ' + sender.title + '\n';
@@ -78,20 +106,29 @@ global.fn.eventEmitter.on('sendtoall', async (userid, sender, text, attachments,
 
 var sendMessToNextUser = async (op, addToNext) =>
 {
-    //send to user
+    // get user profile
     var skip  = op.next;
     var user  = await global.fn.db.user.findOne(queryObject).sort({'userid':1}).skip(skip).exec().then();
-    var msent = await global.fn.sendMessage(user.userid, op.mess, op.markup).then()
-    .catch(e => {
-      console.log(`sendbox error to ${user.userid} | statusCode ${e.response.statusCode}`);
-      if(e.response.statusCode == 403){
-        global.fn.db.sendbox.update({'_id': op.sender._id}, { $inc: {blocked: 1}}).exec();
-        global.fn.db.user.update({userid:user.userid}, {$set: {blocked: true}}).exec();
-      }
-    });
 
-    //attachment
-    if(msent && op.attachments.length > 0) await prepareAttachments(msent.chat.id, op.attachments, 0);
+    //send to user
+    if(user != null){
+        var msent = await global.fn.sendMessage(user.userid, op.mess, op.markup).then()
+            .catch(e => {
+                console.log(`sendbox error to ${user.userid} | statusCode ${e.response.statusCode}`);
+                if(e.response.statusCode == 403){
+                    global.fn.db.sendbox.update({'_id': op.sender._id}, { $inc: {blocked: 1}}).exec();
+                    global.fn.db.user.update({userid:user.userid}, {$set: {blocked: true}}).exec();
+                }
+            });
+
+        //attachment
+        if(msent && op.attachments.length > 0) await prepareAttachments(msent.chat.id, op.attachments, 0);
+    }
+    // get done
+    else {
+        getDoneTheSendProcess(op);
+        return;
+    }
 
     //waite for seconds
     await global.fn.sleep(35);
@@ -114,9 +151,20 @@ var sendMessToNextUser = async (op, addToNext) =>
     }
 
     //done
+    else getDoneTheSendProcess(op);
+};
+
+function getDoneTheSendProcess(op)
+{
+    //send report message
+    var rMess = 'گزارش ارسال برای ' + op.sender.title + '\n';
+    rMess += 'تعداد کل کاربران: ' + op.total + '\n';
+    rMess += 'ارسال شده: ' + op.counter + '\n\n';
+
+    //done
     rMess += '✅ ' + 'به همه ارسال شد';
     global.fn.editMessageText(rMess, {'chat_id': op.chat_id, 'message_id': op.message_id}).then();
-};
+}
 
 var prepareAttachments = async function(chat_id, attachments, number)
 {

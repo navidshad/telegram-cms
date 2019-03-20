@@ -72,7 +72,7 @@ module.exports = function(flag, onlyBack, columns)
 
     //costume keyboard
     else if(flag.custom === true){
-        console.log('generate costume keyboard');
+        //console.log('generate costume keyboard');
         return custome(flag.list, flag.grid, keys, flag.back, columns, flag);
     }
 

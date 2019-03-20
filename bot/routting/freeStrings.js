@@ -1,6 +1,5 @@
 var routting = function(message, speratedSection, user)
 {
-    console.log('free strings');
     var last = speratedSection.length-1;
     var text = message.text;
     var nothingToRoute = true;
