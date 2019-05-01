@@ -102,7 +102,27 @@ global.fn.eventEmitter.on('sendtoall', async (userid, sender, text, attachments,
     option.chat_id      = sent.chat.id;
 
     sendMessToNextUser(option, addToNext);
+    
+    tempSendDetail = option;
+    reportTosender();
 });
+
+let tempSendDetail;
+async function reportTosender()
+{
+    await global.fn.sleep(1000);
+
+    var rMess = 'گزارش ارسال برای ' + tempSendDetail.sender.title + '\n';
+    rMess += 'تعداد کل کاربران: ' + tempSendDetail.total + '\n';
+    rMess += 'ارسال شده: ' + tempSendDetail.counter + '\n\n';
+    rMess += '⚠️ ' + 'لطفا این پیام را حذف نکنید...';
+    
+    if(tempSendDetail.next < tempSendDetail.total)
+    {
+        global.fn.editMessageText(rMess, {'chat_id': tempSendDetail.chat_id, 'message_id': tempSendDetail.message_id}).then();
+        reportTosender();
+    }
+}
 
 var sendMessToNextUser = async (op, addToNext) =>
 {
@@ -138,14 +158,15 @@ var sendMessToNextUser = async (op, addToNext) =>
     op.counter++;
 
     //send report message
-    var rMess = 'گزارش ارسال برای ' + op.sender.title + '\n';
-    rMess += 'تعداد کل کاربران: ' + op.total + '\n';
-    rMess += 'ارسال شده: ' + op.counter + '\n\n';
+    tempSendDetail = op;
+    // var rMess = 'گزارش ارسال برای ' + op.sender.title + '\n';
+    // rMess += 'تعداد کل کاربران: ' + op.total + '\n';
+    // rMess += 'ارسال شده: ' + op.counter + '\n\n';
 
     if(op.next <= op.total)
     {
-        rMess += '⚠️ ' + 'لطفا این پیام را حذف نکنید...';
-        global.fn.editMessageText(rMess, {'chat_id': op.chat_id, 'message_id': op.message_id}).then();
+        // rMess += '⚠️ ' + 'لطفا این پیام را حذف نکنید...';
+        // global.fn.editMessageText(rMess, {'chat_id': op.chat_id, 'message_id': op.message_id}).then();
         sendMessToNextUser(op, addToNext);
         return;
     }

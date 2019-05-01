@@ -59,7 +59,7 @@ function sendRequestToGoogleAnalytic (parameters)
     //console.log('Google Analytic, Tracking', query);
 }
 
-function trackPage(userid, page, title, source, options={})
+function trackPage(userid, page, title, options={})
 {
     let pageQuery = Object.assign({
         'cid': userid,
