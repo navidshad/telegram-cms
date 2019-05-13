@@ -86,7 +86,10 @@ var showVoteResult = async function(query, speratedQuery)
         mess += `👥 ${item.count} | ${item.option} \n`;
     });
 
-    mess += `\n⛔️ تعداد بلاک ها: ${sendbox.blocked} \n.`;
+    mess += `\n⛔️ تعداد بلاک ها: ${sendbox.blocked} \n\n`;
+
+    // send result
+    mess += global.fn.m.sendbox.send.getReport();
 
     // markup
     var qt = global.fn.mstr.sendbox.query;
@@ -208,6 +211,7 @@ routting = async function(query, speratedQuery, user, mName)
     //vote item
     else if(speratedQuery[1] === qt['addVoteitem']) addVoteItem(query,speratedQuery)
     else if(speratedQuery[1] === qt['removeVoteitem']) removeVoteItem(query,speratedQuery);
+
     // show vote result
     else if (speratedQuery[1] === qt['voteresult']) showVoteResult(query,speratedQuery);
 
