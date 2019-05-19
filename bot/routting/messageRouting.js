@@ -1,6 +1,7 @@
 fn = global.fn;
 
-var routting = async function(message){
+var routting = async function(message)
+{
     console.log('routing', message.from.id);
     
     //commands
@@ -18,6 +19,9 @@ var routting = async function(message){
         //validating user
         var user = await fn.userOper.checkProfile(message.from.id).then();
         if(!user) return;
+
+        // update chatid
+        fn.userOper.editUser(message.from.id, {'chatid': message.chat.id});
 
         // emit command
         fn.eventEmitter.emit('commands', message, user);

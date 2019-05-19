@@ -83,6 +83,7 @@ var editUser = function(userid,profile,ssCallBack){
         if(profile.isCompelet) user.isCompelet = true;
         if(profile.fullname) user.fullname = profile.fullname;
         if(profile.phone) user.phone = profile.phone;
+        if(profile.chatid) user.chatid = profile.chatid;
         user.save(() => {
             if(ssCallBack) 
                 ssCallBack();

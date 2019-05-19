@@ -35,25 +35,25 @@ var show = async function(message, postName, user, optionPrams, callback)
     switch (post.type) {
         case fn.mstr.post.types['text'].name:
             console.log('send text post');
-            await global.fn.sendMessage(message.from.id, description, option).then();
+            await global.fn.sendMessage(user.userid, description, option).then();
             break;
         case fn.mstr.post.types['file'].name:
             console.log('send file post');
-            await global.robot.bot.sendDocument(message.chat.id, post.fileid, option).then();
+            await global.robot.bot.sendDocument(user.chatid, post.fileid, option).then();
             break;
         case fn.mstr.post.types['photo'].name:
             console.log('send photo post');
-            await global.robot.bot.sendPhoto(message.chat.id, post.photoid, option).then();
+            await global.robot.bot.sendPhoto(user.chatid, post.photoid, option).then();
             break;
             
         case fn.mstr.post.types['sound'].name:
             console.log('send sound post');
-            await global.robot.bot.sendAudio(message.chat.id,post.audioid, option).then();
+            await global.robot.bot.sendAudio(user.chatid,post.audioid, option).then();
             break;
 
         case fn.mstr.post.types['video'].name:
             console.log('send video post');
-            await global.robot.bot.sendVideo(message.chat.id,post.videoid, option).then();
+            await global.robot.bot.sendVideo(user.chatid,post.videoid, option).then();
             break;
     }
     

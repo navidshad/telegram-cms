@@ -35,6 +35,7 @@ var UserSchema = new Schema({
     section     : String,
     datas       : [data],
     date        : {type: Date, default: Date.today()},
+    chatid      : String,
 });
 
 var ConfigSchema = new Schema({

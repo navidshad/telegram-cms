@@ -20,9 +20,11 @@ module.exports = function(detail)
         await this.load();
 
         //Message
-        global.robot.bot.on('message', (msg) => {
+        global.robot.bot.on('message', (msg) => 
+        {
             //console.log(msg.text);
             bot.sendChatAction(msg.chat.id, 'typing');
+
             this.lastMessage = msg;
             global.messageRouting.routting(msg);
         });
